@@ -4,11 +4,11 @@ from app.conf.boilerplate import *
 from app.conf.db import *
 from app.conf.http import *
 from app.conf.installed_apps import *
+from app.conf.media import *
 from app.conf.middleware import *
-# from app.conf.static import *
+from app.conf.static import *
 from app.conf.templates import *
 from app.conf.timezone import *
 
-STATIC_URL = "/static/"
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG", cast=bool, default=False)
