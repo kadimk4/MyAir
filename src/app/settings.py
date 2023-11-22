@@ -11,4 +11,6 @@ from app.conf.templates import *
 from app.conf.timezone import *
 
 SECRET_KEY = env("SECRET_KEY")
+AVIA_API_KEY = env("AVIA_API_KEY")
+AVIA_SECRET_KEY = env("AVIA_SECRET_KEY")
 DEBUG = env("DEBUG", cast=bool, default=False)
