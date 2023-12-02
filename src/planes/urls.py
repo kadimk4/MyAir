@@ -1,9 +1,7 @@
 from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
 from planes.api.views import *
 
 urlpatterns = [
-    path('test/', PlaneView.as_view()),
+    path('test/', PlaneView.as_view({'get': 'list'})),
+    path('test/<str:code>/', PlaneView.as_view({'get': 'retrieve'})),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)
