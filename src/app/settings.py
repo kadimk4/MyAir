@@ -1,14 +1,22 @@
-from app.conf.environ import *
-from app.conf.auth import *
-from app.conf.boilerplate import *
-from app.conf.db import *
-from app.conf.http import *
-from app.conf.installed_apps import *
-from app.conf.media import *
-from app.conf.middleware import *
-from app.conf.static import *
-from app.conf.templates import *
-from app.conf.timezone import *
+from app.conf.environ import env
+
+from split_settings.tools import include
+
+include(
+    "conf/api.py",
+    "conf/auth.py",
+    "conf/boilerplate.py",
+    "conf/db.py",
+    "conf/http.py",
+    "conf/i18n.py",
+    "conf/installed_apps.py",
+    "conf/media.py",
+    "conf/middleware.py",
+    "conf/static.py",
+    "conf/templates.py",
+    "conf/timezone.py",
+)
+
 
 SECRET_KEY = env("SECRET_KEY")
 AVIA_API_KEY = env("AVIA_API_KEY")
