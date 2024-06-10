@@ -8,4 +8,5 @@ INSTALLED_APPS = [
     'rest_framework',
     'tickets',
     'users',
+    'debug_toolbar',
 ]
