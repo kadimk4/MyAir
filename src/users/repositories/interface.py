@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.core.interface import BaseInterface
+from core.interface import BaseInterface
 
-class BaseUser(ABC, BaseInterface):
+class BaseUser(BaseInterface, ABC):
     pass

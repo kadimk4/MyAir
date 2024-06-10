@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from rest_framework import status
-from src.users.repositories.interface import BaseUser
-from src.users.models import User
+from users.repositories.interface import BaseUser
+from users.models import User
 
 
 class UserRepository(BaseUser):
@@ -14,6 +14,10 @@ class UserRepository(BaseUser):
             return HttpResponse('User does not exist', status=status.HTTP_404_NOT_FOUND)
         except User.MultipleObjectsReturned:
             return HttpResponse('There are many users with this id', status=status.HTTP_300_MULTIPLE_CHOICES)
+    
+    def get_all():
+        users = User.objects.all()
+        return users
 
     def post():
         pass

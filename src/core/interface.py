@@ -8,6 +8,10 @@ class BaseInterface(ABC):
         pass
     
     @abstractmethod
+    def get_all():
+        pass
+    
+    @abstractmethod
     def post():
         pass
     
