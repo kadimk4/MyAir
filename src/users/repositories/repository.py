@@ -1,38 +1,64 @@
-from dataclasses import dataclass
+# from dataclasses import dataclass
 
-from django.http import HttpResponse
-from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from users.repositories.interface import BaseUser
 from users.models import User
-from users.api.serializers import UserCreateSerializer
+from users.api.serializers import UserCrudSerializer
 
 
 class UserRepository(BaseUser):
-            
-    def get(id):
-        try:
-            current_user = User.objects.get(id=id)
-            return current_user
-        except User.DoesNotExist:
-            return HttpResponse('User does not exist', status=status.HTTP_404_NOT_FOUND)
-        except User.MultipleObjectsReturned:
-            return HttpResponse('There are many users with this id', status=status.HTTP_300_MULTIPLE_CHOICES)
-    
-    def get_all():
-        users = User.objects.all()
-        return users
-
-    def post(request):
-        serializer = UserCreateSerializer(
-            data=request.data
+   
+    def get_all() -> list[dict]:
+        users_list = User.objects.values(
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'link',
+            'email',
         )
+        return users_list
+
+    def post(request) -> dict[str]:
+        serializer = UserCrudSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.data
+        
+        serializer.save()
+        
+        return {'id': user['id'],
+                'username': user['username'],
+                'fist_name': user['first_name'],
+                'last_name': user['last_name'],
+                'link': user['link'],
+                'email': user['email'],
+        }
+
+    def update(request) -> dict[str]:
+        user_id = request.data.get('id')
+        user = get_object_or_404(User, pk=user_id)
+        serializer = UserCrudSerializer(instance=user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
-        return serializer
 
-    def update():
-        pass
+        return {'id': user.id,
+                'username': user.username,
+                'fist_name': user.first_name,
+                'last_name': user.last_name,
+                'link': user.link,
+                'email': user.email,
+        }
 
-    def delete():
-        pass
+    def delete(self, request) -> dict[str]:
+        user_id = request.data.get('id')
+        user = get_object_or_404(User, pk=user_id)
+        user.delete()
+
+        return {'id': user.id,
+                'username': user.username,
+                'fist_name': user.first_name,
+                'last_name': user.last_name,
+                'link': user.link,
+                'email': user.email,
+        }
