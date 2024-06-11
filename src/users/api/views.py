@@ -1,33 +1,34 @@
-# from django.shortcuts import render
-# from rest_framework.response import Response
-# from users.models import UserPaginator
-# from rest_framework.generics import GenericAPIView, ListAPIView
-# from rest_framework import status
-# from users.repositories.repository import UserRepository
-# from users.api.serializers import UserCrudSerializer, UserSerializer
+from rest_framework import status
+from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.response import Response
 
-# class SelfListView(ListAPIView):
-#     queryset = UserRepository.get_all()
-
-#     serializer_class = UserSerializer
-#     pagination_class = UserPaginator
+from users.api.serializers import UserCrudSerializer, UserSerializer
+from users.models import UserPaginator
+from users.repositories.repository import UserRepository
 
 
-# class SelfCreateView(GenericAPIView):
-#     serializer_class = UserCrudSerializer
+class SelfListView(ListAPIView):
+    queryset = UserRepository.get_all()
 
-#     def post(request):
-#         serializer = UserRepository.post(request)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    serializer_class = UserSerializer
+    pagination_class = UserPaginator
 
 
-# class SelfUpdareDeleteView(GenericAPIView):
-#     serializer_class = UserCrudSerializer
+class SelfCreateView(GenericAPIView):
+    serializer_class = UserCrudSerializer
 
-#     def patch(request):
-#         serializer = UserRepository.update(request)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(request):
+        serializer = UserRepository.post(request)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-#     def delete(request):
-#         serializer = UserRepository.delete(request)
-#         return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+
+class SelfUpdareDeleteView(GenericAPIView):
+    serializer_class = UserCrudSerializer
+
+    def patch(request):
+        serializer = UserRepository.update(request)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(request):
+        serializer = UserRepository.delete(request)
+        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
