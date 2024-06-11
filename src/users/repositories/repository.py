@@ -1,13 +1,14 @@
 # from dataclasses import dataclass
 
 from rest_framework.generics import get_object_or_404
-from users.repositories.interface import BaseUser
-from users.models import User
+
 from users.api.serializers import UserCrudSerializer
+from users.models import User
+from users.repositories.interface import BaseUser
 
 
 class UserRepository(BaseUser):
-   
+
     def get_all() -> list[dict]:
         users_list = User.objects.values(
             'id',
@@ -23,16 +24,16 @@ class UserRepository(BaseUser):
         serializer = UserCrudSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.data
-        
+
         serializer.save()
-        
+
         return {'id': user['id'],
                 'username': user['username'],
                 'fist_name': user['first_name'],
                 'last_name': user['last_name'],
                 'link': user['link'],
                 'email': user['email'],
-        }
+                }
 
     def update(request) -> dict[str]:
         user_id = request.data.get('id')
@@ -48,7 +49,7 @@ class UserRepository(BaseUser):
                 'last_name': user.last_name,
                 'link': user.link,
                 'email': user.email,
-        }
+                }
 
     def delete(self, request) -> dict[str]:
         user_id = request.data.get('id')
@@ -61,4 +62,4 @@ class UserRepository(BaseUser):
                 'last_name': user.last_name,
                 'link': user.link,
                 'email': user.email,
-        }
+                }

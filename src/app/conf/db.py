@@ -1,6 +1,5 @@
 from app.conf.environ import env
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
