@@ -5,6 +5,7 @@ from rest_framework.generics import get_object_or_404
 from users.api.serializers import UserCrudSerializer
 from users.models import User
 from users.repositories.interface import BaseUser
+from users.services.email import is_valid_email
 
 
 class UserRepository(BaseUser):
@@ -21,19 +22,21 @@ class UserRepository(BaseUser):
         return users_list
 
     def post(request) -> dict[str]:
-        serializer = UserCrudSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.data
+        if is_valid_email(request.data['email']):
 
-        serializer.save()
+            serializer = UserCrudSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
 
-        return {'id': user['id'],
-                'username': user['username'],
-                'fist_name': user['first_name'],
-                'last_name': user['last_name'],
-                'link': user['link'],
-                'email': user['email'],
-                }
+            serializer.save()
+
+            return {
+                'username': request.data['username'],
+                'fist_name': request.data['first_name'],
+                'last_name': request.data['last_name'],
+                'link': request.data['link'],
+                'email': request.data['email'],
+            }
+        return
 
     def update(request) -> dict[str]:
         user_id = request.data.get('id')

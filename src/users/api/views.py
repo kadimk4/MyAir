@@ -17,9 +17,11 @@ class SelfListView(ListAPIView):
 class SelfCreateView(GenericAPIView):
     serializer_class = UserCrudSerializer
 
-    def post(request):
+    def post(self, request):
         serializer = UserRepository.post(request)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if serializer:
+            return Response(serializer, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class SelfUpdareDeleteView(GenericAPIView):
