@@ -1,7 +1,7 @@
 DC = docker compose
 STORAGES_FILE = docker_compose/storages.yaml
 EXEC = docker exec -it
-DB_CONTAINER = test_db
+DB_CONTAINER = postgres
 LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
