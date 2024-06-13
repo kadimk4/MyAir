@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class BaseInterface(ABC):
+class BaseRepository(ABC):
 
     @abstractmethod
     def get():

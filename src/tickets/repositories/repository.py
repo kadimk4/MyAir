@@ -2,8 +2,9 @@ from rest_framework.generics import get_object_or_404
 
 from tickets.api.serializers import TicketSerializer
 from tickets.models import Ticket
-from tickets.services.user import is_valid_ticket
-from users.repositories.interface import BaseTicket
+from tickets.repositories.interface import BaseTicket
+
+# from tickets.services.user import is_valid_ticket
 
 
 class TicketRepository(BaseTicket):
@@ -32,7 +33,7 @@ class TicketRepository(BaseTicket):
             'place_code': request.data['place_code'],
             'user_id': request.data['user_id'],
             'date': request.data['date'],
-                }
+        }
 
     def update(request) -> dict[str, any]:
         ticket_id = request.data['id']
@@ -47,7 +48,7 @@ class TicketRepository(BaseTicket):
             'place_code': request.data['place_code'],
             'user_id': request.data['user_id'],
             'date': request.data['date'],
-                }
+        }
 
     def delete(request) -> dict[str, any]:
         ticket_id = request.data['id']
@@ -59,4 +60,4 @@ class TicketRepository(BaseTicket):
             'place_code': request.data['place_code'],
             'user_id': request.data['user_id'],
             'date': request.data['date'],
-                }
+        }

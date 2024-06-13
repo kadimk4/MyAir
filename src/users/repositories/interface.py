@@ -1,11 +1,7 @@
 from abc import ABC
 
-from core.interface import BaseInterface
+from core.interface import BaseRepository
 
 
-class BaseUser(BaseInterface, ABC):
-    pass
-
-
-class BaseTicket(BaseInterface, ABC):
+class BaseUser(BaseRepository, ABC):
     pass

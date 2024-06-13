@@ -21,17 +21,18 @@ class UserRepository(BaseUser):
         )
         return users_list
 
-    def get(request, id) -> dict[str, any]:
+    def get(self, id) -> dict[str, any]:
         user = get_object_or_404(User, pk=id)
         serializer = UserCrudSerializer(user)
         return {
             'username': serializer.data['username'],
-            'fist_name': serializer.data['first_name'],
+            'first_name': serializer.data['first_name'],
             'last_name': serializer.data['last_name'],
             'link': serializer.data['link'],
             'email': serializer.data['email'],
-            }
-    def post(request) -> dict[str, any]:
+        }
+
+    def post(self, request) -> dict[str, any]:
         if is_valid_email(request.data['email']):
 
             serializer = UserCrudSerializer(data=request.data)
@@ -41,15 +42,14 @@ class UserRepository(BaseUser):
 
             return {
                 'username': request.data['username'],
-                'fist_name': request.data['first_name'],
+                'first_name': request.data['first_name'],
                 'last_name': request.data['last_name'],
                 'link': request.data['link'],
                 'email': request.data['email'],
             }
         return
 
-    def update(request) -> dict[str, any]:
-        user_id = request.data['id']
+    def update(request, user_id) -> dict[str, any]:
         user = get_object_or_404(User, pk=user_id)
         serializer = UserCrudSerializer(instance=user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -58,21 +58,21 @@ class UserRepository(BaseUser):
 
         return {'id': user.id,
                 'username': user.username,
-                'fist_name': user.first_name,
+                'first_name': user.first_name,
                 'last_name': user.last_name,
                 'link': user.link,
                 'email': user.email,
                 }
 
-    def delete(self, request) -> dict[str]:
-        user_id = request.data['id']
+    def delete(self, user_id) -> dict[str]:
         user = get_object_or_404(User, pk=user_id)
+        user_data = self.get(user_id)
+        print(user_data)
         user.delete()
-
-        return {'id': user.id,
-                'username': user.username,
-                'fist_name': user.first_name,
-                'last_name': user.last_name,
-                'link': user.link,
-                'email': user.email,
+        return {'id': user_id,
+                'username': user_data['username'],
+                'first_name': user_data['first_name'],
+                'last_name': user_data['last_name'],
+                'link': user_data['link'],
+                'email': user_data['email'],
                 }
