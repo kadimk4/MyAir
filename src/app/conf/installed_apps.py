@@ -6,7 +6,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'planes',
+    'drf_spectacular',
     'tickets',
     'users',
+    'debug_toolbar',
 ]
