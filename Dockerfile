@@ -3,9 +3,7 @@ FROM python:3.11.5-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir /myair_app
-
-WORKDIR /myair_app
+WORKDIR /app
 
 RUN apt update -y && \
     apt install -y python3-dev \
@@ -14,7 +12,7 @@ RUN apt update -y && \
     libpq-dev \
     nmap
 
-ADD poetry.lock pyproject.toml /myair_app/
+ADD pyproject.toml /app
 
 RUN pip install --upgrade pip
 RUN pip install poetry
@@ -22,10 +20,8 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root --no-interaction --no-ansi
 
-WORKDIR /src
+COPY . /app/
 
-COPY src /src
+WORKDIR /app/src
 
-EXPOSE 8000
-
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]

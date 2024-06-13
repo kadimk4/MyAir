@@ -1,4 +1,4 @@
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # INTERNAL_IPS = [
