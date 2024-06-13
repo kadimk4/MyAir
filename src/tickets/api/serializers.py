@@ -6,4 +6,9 @@ from tickets.models import Ticket
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = '__all__'
+        fields = [
+            'code',
+            'place_code',
+            'user_id',
+            'date'
+        ]

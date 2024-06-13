@@ -15,6 +15,7 @@ include(
     'conf/static.py',
     'conf/templates.py',
     'conf/timezone.py',
+    'conf/rest_framework.py',
 )
 
 
