@@ -32,7 +32,7 @@ class UserRepository(BaseUser):
             'email': serializer.data['email'],
         }
 
-    def post(self, request) -> dict[str, any]:
+    def post(request) -> dict[str, any]:
         if is_valid_email(request.data['email']):
 
             serializer = UserCrudSerializer(data=request.data)
@@ -67,7 +67,6 @@ class UserRepository(BaseUser):
     def delete(self, user_id) -> dict[str]:
         user = get_object_or_404(User, pk=user_id)
         user_data = self.get(user_id)
-        print(user_data)
         user.delete()
         return {'id': user_id,
                 'username': user_data['username'],

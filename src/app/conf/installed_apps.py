@@ -9,5 +9,5 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'tickets',
     'users',
-    'debug_toolbar',
+    # 'debug_toolbar',
 ]
