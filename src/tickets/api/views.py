@@ -1,6 +1,6 @@
 # from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
 from tickets.api.serializers import TicketSerializer
@@ -15,12 +15,14 @@ class SelfListView(ListAPIView):
     serializer_class = TicketSerializer
     pagination_class = TicketPagination
 
+
 class SelfView(GenericAPIView):
     serializer_class = TicketSerializer
 
     def get(self, request, id):
         serializer = TicketRepository.get(request, id)
         return Response(data=serializer, status=status.HTTP_200_OK)
+
 
 class SelfCreateView(GenericAPIView):
     serializer_class = TicketSerializer
@@ -30,6 +32,7 @@ class SelfCreateView(GenericAPIView):
         if serializer:
             return Response(data=serializer, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class SelfUpdateDeleteView(GenericAPIView):
     serializer_class = TicketSerializer

@@ -9,8 +9,6 @@ class Ticket(models.Model):
     # plane_code = models.ForeignKey('planes.Plane_Value', on_delete=models.CASCADE)
     date = models.DateField()
 
+
 class TicketPagination(PageNumberPagination):
     page_size = 50
-
-
-
