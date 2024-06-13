@@ -1,4 +1,4 @@
-from amadeus import Client, Location, ResponseError
+from amadeus import Client
 
 from app.settings import AVIA_API_KEY, AVIA_SECRET_KEY
 

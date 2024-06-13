@@ -1,9 +1,17 @@
 from django.contrib import admin
 from django.urls import include, path
 
+from app import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('planes.urls')),
-    # path('', include('tickets.urls')),
-    # path('', include('users.urls')),
+    path('api/', include('users.urls')),
+    path('api/', include('tickets.urls')),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns = [
+        *urlpatterns,
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]
