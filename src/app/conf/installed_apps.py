@@ -8,6 +8,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'tickets',
+    'amadeus_api',
     'users',
     # 'debug_toolbar',
 ]

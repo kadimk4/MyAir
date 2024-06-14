@@ -1,6 +1,11 @@
 from django.urls import path
 
-from tickets.api.views import SelfListView, SelfUpdateDeleteView, SelfCreateView, SelfView
+from tickets.api.views import (
+    SelfCreateView,
+    SelfListView,
+    SelfUpdateDeleteView,
+    SelfView,
+)
 
 urlpatterns = [
     path('tickets/', SelfListView.as_view(), name='ticket_list'),

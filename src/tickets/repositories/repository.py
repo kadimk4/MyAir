@@ -4,7 +4,7 @@ from tickets.api.serializers import TicketSerializer
 from tickets.models import Ticket
 from tickets.repositories.interface import BaseTicket
 
-# from tickets.services.user import is_valid_ticket
+
 
 
 class TicketRepository(BaseTicket):
