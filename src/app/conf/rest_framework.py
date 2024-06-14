@@ -4,8 +4,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'My Air',
-    'DESCRIPTION': 'AviaSales',
+    'DESCRIPTION': 'MyAirSales',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
 }
