@@ -21,7 +21,7 @@ class SelfView(GenericAPIView):
 
     def get(self, request, id):
         repository = RepositoryFactory.create('user')
-        serializer = repository.get(request, id)
+        serializer = repository.get(id)
         return Response(data=serializer, status=status.HTTP_200_OK)
 
 
@@ -41,10 +41,10 @@ class SelfUpdateDeleteView(GenericAPIView):
 
     def patch(self, request, id):
         repository = RepositoryFactory.create('user')
-        serializer = repository.update(request=request, user_id=id)
+        serializer = repository.update(request, id)
         return Response(serializer, status=status.HTTP_200_OK)
 
     def delete(self, request, id):
         repository = RepositoryFactory.create('user')
-        serializer = repository.delete(user_id=id)
+        serializer = repository.delete(id)
         return Response(serializer, status=status.HTTP_200_OK)

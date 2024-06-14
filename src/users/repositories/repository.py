@@ -2,7 +2,7 @@
 
 from rest_framework.generics import get_object_or_404
 
-from users.api.serializers import UserCrudSerializer
+from users.api.serializers import UserCrudSerializer, UserSerializer
 from users.models import User
 from users.repositories.interface import BaseUser
 from users.services.email import is_valid_email
@@ -21,7 +21,7 @@ class UserRepository(BaseUser):
         )
         return users_list
 
-    def get(self, id) -> dict[str, any]:
+    def get(id) -> dict[str, any]:
         user = get_object_or_404(User, pk=id)
         serializer = UserCrudSerializer(user)
         return {
@@ -66,12 +66,12 @@ class UserRepository(BaseUser):
 
     def delete(user_id) -> dict[str]:
         user = get_object_or_404(User, pk=user_id)
-        user_data = UserCrudSerializer(user)
+        user_serializer = UserSerializer(user)
         user.delete()
-        return {'id': user_id,
-                'username': user_data.data['username'],
-                'first_name': user_data.data['first_name'],
-                'last_name': user_data.data['last_name'],
-                'link': user_data.data['link'],
-                'email': user_data.data['email'],
+        return {'id': user_serializer.data['id'],
+                'username': user_serializer.data['username'],
+                'first_name': user_serializer.data['first_name'],
+                'last_name': user_serializer.data['last_name'],
+                'link': user_serializer.data['link'],
+                'email': user_serializer.data['email'],
                 }
