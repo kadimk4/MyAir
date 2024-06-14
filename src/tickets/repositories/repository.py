@@ -13,8 +13,8 @@ class TicketRepository(BaseTicket):
         ticket_list = Ticket.objects.all()
         return ticket_list
 
-    def get(request, id) -> dict[str, any]:
-        ticket = get_object_or_404(Ticket, pk=id)
+    def get(ticket_id) -> dict[str, any]:
+        ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketSerializer(ticket)
         return {
             'code': serializer.data['code'],
@@ -35,8 +35,7 @@ class TicketRepository(BaseTicket):
             'date': request.data['date'],
         }
 
-    def update(request) -> dict[str, any]:
-        ticket_id = request.data['id']
+    def update(request, ticket_id) -> dict[str, any]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketSerializer(instance=ticket, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -44,20 +43,20 @@ class TicketRepository(BaseTicket):
         serializer.save()
 
         return {
-            'code': request.data['code'],
-            'place_code': request.data['place_code'],
-            'user_id': request.data['user_id'],
-            'date': request.data['date'],
+            'code': serializer.data['code'],
+            'place_code': serializer.data['place_code'],
+            'user_id': serializer.data['user_id'],
+            'date': serializer.data['date'],
         }
 
-    def delete(request) -> dict[str, any]:
-        ticket_id = request.data['id']
+    def delete(ticket_id) -> dict[str, any]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
+        ticket_data = TicketSerializer(ticket)
         ticket.delete()
-
         return {
-            'code': request.data['code'],
-            'place_code': request.data['place_code'],
-            'user_id': request.data['user_id'],
-            'date': request.data['date'],
+            'code': ticket_data.data['code'],
+            'place_code': ticket_data.data['place_code'],
+            'user_id': ticket_data.data['user_id'],
+            'date': ticket_data.data['date'],
         }
+
