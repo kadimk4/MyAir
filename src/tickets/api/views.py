@@ -5,12 +5,15 @@ from rest_framework.response import Response
 
 from tickets.api.serializers import TicketSerializer
 from tickets.models import TicketPagination
-from tickets.repositories.repository import TicketRepository
+
+
+from core.factories.rep_factory import RepositoryFactory
 
 
 # Create your views here.
 class SelfListView(ListAPIView):
-    queryset = TicketRepository.get_all()
+    repository = RepositoryFactory.create('ticket')
+    queryset = repository.get_all()
 
     serializer_class = TicketSerializer
     pagination_class = TicketPagination
@@ -19,8 +22,9 @@ class SelfListView(ListAPIView):
 class SelfView(GenericAPIView):
     serializer_class = TicketSerializer
 
-    def get(self, request, id):
-        serializer = TicketRepository.get(request, id)
+    def get(self,request, ticket_id):
+        repository = RepositoryFactory.create('ticket')
+        serializer = repository.get(ticket_id=ticket_id)
         return Response(data=serializer, status=status.HTTP_200_OK)
 
 
@@ -28,7 +32,8 @@ class SelfCreateView(GenericAPIView):
     serializer_class = TicketSerializer
 
     def post(self, request):
-        serializer = TicketRepository.post(request)
+        repository = RepositoryFactory.create('ticket')
+        serializer = repository.post(request=request)
         if serializer:
             return Response(data=serializer, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -37,10 +42,12 @@ class SelfCreateView(GenericAPIView):
 class SelfUpdateDeleteView(GenericAPIView):
     serializer_class = TicketSerializer
 
-    def patch(request):
-        serializer = TicketRepository.update(request)
+    def patch(self, request, ticket_id):
+        repository = RepositoryFactory.create('ticket')
+        serializer = repository.update(request=request, ticket_id=ticket_id)
         return Response(data=serializer, status=status.HTTP_200_OK)
 
-    def delete(request):
-        serializer = TicketRepository.delete(request)
+    def delete(self, request, ticket_id):
+        repository = RepositoryFactory.create('ticket')
+        serializer = repository.delete(ticket_id=ticket_id)
         return Response(data=serializer, status=status.HTTP_200_OK)

@@ -67,7 +67,6 @@ class TicketTest(APITestCase):
         self.assertEqual(Ticket.objects.get().code, 'test_code2')
         self.assertEqual(Ticket.objects.get().place_code, 'test_placecode2')
         self.assertEqual(Ticket.objects.get().date.strftime('%Y-%m-%d'), '2024-06-15')
-
         url = reverse('ticket_update', kwargs={'ticket_id': 1})
         response = self.client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
