@@ -54,10 +54,6 @@ superuser:
 tests:
 	${DC} -f ${TESTS_FILE} -f ${STORAGES_FILE} ${ENV} up -d
 
-.PHONY: tests-down
-tests-down:
-	${DC} -f ${TESTS_FILE} down
-
 .PHONY: tests-logs
 tests-logs:
 	${LOGS} tests -f
