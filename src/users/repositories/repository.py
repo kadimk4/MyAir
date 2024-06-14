@@ -64,14 +64,14 @@ class UserRepository(BaseUser):
                 'email': user.email,
                 }
 
-    def delete(self, user_id) -> dict[str]:
+    def delete(user_id) -> dict[str]:
         user = get_object_or_404(User, pk=user_id)
-        user_data = self.get(user_id)
+        user_data = get_object_or_404(User, pk=user_id)
         user.delete()
-        return {'id': user_id,
-                'username': user_data['username'],
-                'first_name': user_data['first_name'],
-                'last_name': user_data['last_name'],
-                'link': user_data['link'],
-                'email': user_data['email'],
+        return {'id': user_data.id,
+                'username': user_data.username,
+                'first_name': user_data.first_name,
+                'last_name': user_data.last_name,
+                'link': user_data.link,
+                'email': user_data.email,
                 }
