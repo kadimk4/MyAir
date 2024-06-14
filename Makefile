@@ -1,5 +1,6 @@
 DC = docker compose
 STORAGES_FILE = docker_compose/storages.yaml
+TESTS_FILE = docker_compose/tests.yaml
 EXEC = docker exec -it
 DB_CONTAINER = postgres
 LOGS = docker logs
@@ -48,3 +49,15 @@ migrations:
 .PHONY: superuser
 superuser:
 	${EXEC} ${APP_CONTAINER} ${MANAGE_PY} createsuperuser
+
+.PHONY: tests
+tests:
+	${DC} -f ${TESTS_FILE} -f ${STORAGES_FILE} ${ENV} up -d
+
+.PHONY: tests-down
+tests-down:
+	${DC} -f ${TESTS_FILE} down
+
+.PHONY: tests-logs
+tests-logs:
+	${LOGS} tests -f
