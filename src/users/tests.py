@@ -29,29 +29,31 @@ class UsersTest(APITestCase):
                 }
 
         response = self.client.post(url, data, format='multipart')
+
         url = reverse('users-list')
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = self.client.get(url, format='json')
+        user_id = response.data['results'][0]['id']
         self.assertEqual(len(response.data['results']), 1)
 
-        url = reverse('user-change', kwargs={'id': 1})
+        url = reverse('user-change', kwargs={'id': user_id})
         data = {
             'first_name': 'Kate_change',
         }
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        url = reverse('user-view', kwargs={'id': 1})
+        url = reverse('user-view', kwargs={'id': user_id})
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['first_name'], 'Kate_change')
 
-        url = reverse('user-change', kwargs={'id': 1})
+        url = reverse('user-change', kwargs={'id': user_id})
         response = self.client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        url = reverse('user-view', kwargs={'id': 1})
+        url = reverse('user-view', kwargs={'id': user_id})
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
