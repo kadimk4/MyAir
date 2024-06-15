@@ -30,13 +30,13 @@ class UsersTest(APITestCase):
 
         response = self.client.post(url, data, format='multipart')
 
-        url = reverse('users-list')
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        url = reverse('users-list')
         response = self.client.get(url, format='json')
-        user_id = response.data['results'][0]['id']
-        self.assertEqual(len(response.data['results']), 1)
+        user_id = response.data[0]['id']
+        self.assertEqual(len(response.data), 1)
 
         url = reverse('user-change', kwargs={'id': user_id})
         data = {

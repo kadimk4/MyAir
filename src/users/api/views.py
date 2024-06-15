@@ -1,28 +1,38 @@
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiTypes,
+    extend_schema,
+)
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiExample
+
 from core.factories.rep_factory import RepositoryFactory
 from users.api.serializers import UserRequestSerializer, UserResponseSerializer
 from users.models import UserPaginator
 
-@extend_schema(tags=['Users'])
-class SelfListView(ListAPIView):
 
-    repository = RepositoryFactory.create('user')
-    queryset = repository.get_all()
+@extend_schema(tags=['Users'])
+class SelfListView(GenericAPIView):
+
+    def get(self, request):
+        repository = RepositoryFactory.create('user')
+        queryset = repository.get_all()
+        return Response(data=queryset, status=status.HTTP_200_OK)
 
     serializer_class = UserResponseSerializer
     pagination_class = UserPaginator
 
+
 @extend_schema(tags=['Users'])
 class SelfView(GenericAPIView):
     serializer_class = UserRequestSerializer
-    
+
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name="id",
+                name='id',
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.PATH,
                 examples=[
@@ -44,14 +54,16 @@ class SelfView(GenericAPIView):
         repository = RepositoryFactory.create('user')
         serializer = repository.get(id)
         return Response(data=serializer, status=status.HTTP_200_OK)
+
+
 @extend_schema(tags=['Users'])
 class SelfCreateView(GenericAPIView):
     serializer_class = UserRequestSerializer
-    
+
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name="first_name",
+                name='first_name',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -71,7 +83,7 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="last_name",
+                name='last_name',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -91,7 +103,7 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="username",
+                name='username',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -111,7 +123,7 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="email",
+                name='email',
                 type=OpenApiTypes.EMAIL,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -131,7 +143,7 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="link",
+                name='link',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -145,7 +157,7 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="password",
+                name='password',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -165,9 +177,9 @@ class SelfCreateView(GenericAPIView):
                 required=True
             ),
             OpenApiParameter(
-                name="passport",
+                name='passport',
                 type=OpenApiTypes.BINARY,
-                location="media",
+                location='media',
                 required=True
             )
         ],
@@ -181,6 +193,7 @@ class SelfCreateView(GenericAPIView):
         if serializer:
             return Response(data=serializer, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @extend_schema(tags=['Users'])
 class SelfUpdateDeleteView(GenericAPIView):
@@ -206,9 +219,9 @@ class SelfUpdateDeleteView(GenericAPIView):
                         description='user ID example for update'
                     )
                 ]
-                ),
+            ),
             OpenApiParameter(
-                name="first_name",
+                name='first_name',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -227,7 +240,7 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="last_name",
+                name='last_name',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -246,7 +259,7 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="username",
+                name='username',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -265,7 +278,7 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="email",
+                name='email',
                 type=OpenApiTypes.EMAIL,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -284,7 +297,7 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="link",
+                name='link',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -297,7 +310,7 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="password",
+                name='password',
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
                 examples=[
@@ -316,24 +329,23 @@ class SelfUpdateDeleteView(GenericAPIView):
                 ],
             ),
             OpenApiParameter(
-                name="passport",
+                name='passport',
                 type=OpenApiTypes.BINARY,
-                location="media",
+                location='media',
             )
         ],
         responses=UserResponseSerializer,
         request=UserRequestSerializer,
         description='Update user'
     )
-    
     def patch(self, request, id):
         repository = RepositoryFactory.create('user')
         serializer = repository.update(request, id)
         return Response(serializer, status=status.HTTP_200_OK)
-    
+
     @extend_schema(
         parameters=[
-            OpenApiParameter("id", OpenApiTypes.INT, OpenApiParameter.PATH, examples=[
+            OpenApiParameter('id', OpenApiTypes.INT, OpenApiParameter.PATH, examples=[
                 OpenApiExample(
                     name='User delete example 1',
                     summary='Example 1',
@@ -350,7 +362,6 @@ class SelfUpdateDeleteView(GenericAPIView):
         ],
         description='Delete user'
     )
-    
     def delete(self, request, id):
         repository = RepositoryFactory.create('user')
         serializer = repository.delete(id)
