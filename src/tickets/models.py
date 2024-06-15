@@ -10,5 +10,12 @@ class Ticket(models.Model):
     date = models.DateField()
 
 
-class TicketPagination(PageNumberPagination):
-    page_size = 50
+class BaseTicketPagination(PageNumberPagination):
+    page_size = 25
+    page_size_query_param = 'page_size'
+    max_page_size = 25
+
+class LongTicketPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 100

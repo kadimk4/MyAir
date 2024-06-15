@@ -17,6 +17,7 @@ class UserResponseSerializer(serializers.ModelSerializer):
 
 
 class UserRequestSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = [
