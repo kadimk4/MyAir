@@ -9,5 +9,5 @@ class RepositoryFactory:
     @classmethod
     def create(cls, name: str) -> BaseRepository:
         if name in cls.repositories:
-            return cls.repositories[name]
+            return cls.repositories[name]()
         raise ValueError('Repository not found: %s' % name)
