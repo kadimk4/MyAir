@@ -38,12 +38,12 @@ app-logs:
 app-down:
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} down
 
-.PHONY: migrate
-migrate:
+.PHONY: app-migrate
+app-migrate:
 	${EXEC} ${APP_CONTAINER} ${MANAGE_PY} migrate
 
-.PHONY: migrations
-migrations:
+.PHONY: app-migrations
+app-migrations:
 	${EXEC} ${APP_CONTAINER} ${MANAGE_PY} makemigrations
 
 .PHONY: superuser
@@ -57,3 +57,11 @@ tests:
 .PHONY: tests-logs
 tests-logs:
 	${LOGS} tests -f
+
+.PHONY: migrate
+migrate:
+	cd src && ${MANAGE_PY} migrate
+
+.PHONY: migrations
+migrations:
+	cd src && ${MANAGE_PY} makemigrations

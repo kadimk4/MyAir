@@ -1,6 +1,6 @@
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiExample
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from tickets.api.serializers import TicketRequestSerializer, TicketResponseSerializer
@@ -8,6 +8,7 @@ from tickets.models import BaseTicketPagination
 from drf_spectacular.views import extend_schema
 
 from core.factories.rep_factory import RepositoryFactory
+from tickets.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Tickets'])
@@ -41,6 +42,7 @@ class SelfCreateView(GenericAPIView):
 
     @extend_schema(
         request=SelfCreateViewSchema()
+    )
     def post(self, request):
         repository = RepositoryFactory.create('ticket')
         serializer = repository.post(request=request)

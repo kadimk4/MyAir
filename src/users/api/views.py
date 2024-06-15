@@ -1,8 +1,9 @@
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiExample
+from drf_spectacular.utils import extend_schema
 from core.factories.rep_factory import RepositoryFactory
+from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 from users.api.serializers import UserRequestSerializer, UserResponseSerializer
 from users.models import BaseUserPagination
 
