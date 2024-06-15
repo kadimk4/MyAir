@@ -5,15 +5,18 @@ from tickets.models import Ticket
 from tickets.repositories.interface import BaseTicket
 
 
-
-
 class TicketRepository(BaseTicket):
 
-    def get_all() -> list[dict]:
-        ticket_list = Ticket.objects.all()
+    def get_all(self) -> list[dict]:
+        ticket_list = Ticket.objects.values(
+            'id',
+            'code',
+            'user_id',
+            'date'
+        )
         return ticket_list
 
-    def get(ticket_id) -> dict[str, any]:
+    def get(self, ticket_id) -> dict[str, any]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketRequestSerializer(ticket)
         return {
@@ -23,7 +26,7 @@ class TicketRepository(BaseTicket):
             'date': serializer.data['date'],
         }
 
-    def post(request) -> dict[str, any]:
+    def post(self, request) -> dict[str, any]:
         serializer = TicketRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -35,7 +38,7 @@ class TicketRepository(BaseTicket):
             'date': request.data['date'],
         }
 
-    def update(request, ticket_id) -> dict[str, any]:
+    def update(self, request, ticket_id) -> dict[str, any]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketRequestSerializer(instance=ticket, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -49,7 +52,7 @@ class TicketRepository(BaseTicket):
             'date': serializer.data['date'],
         }
 
-    def delete(ticket_id) -> dict[str, any]:
+    def delete(self, ticket_id) -> dict[str, any]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         ticket_data = TicketRequestSerializer(ticket)
         ticket.delete()
@@ -59,4 +62,3 @@ class TicketRepository(BaseTicket):
             'user_id': ticket_data.data['user_id'],
             'date': ticket_data.data['date'],
         }
-

@@ -2,7 +2,7 @@
 
 from rest_framework.generics import get_object_or_404
 
-from users.api.serializers import UserRequestSerializer, UserResponseSerializer
+from users.api.serializers import UserRequestSerializer
 from users.models import User
 from users.repositories.interface import BaseUser
 from users.services.email import is_valid_email
@@ -10,7 +10,7 @@ from users.services.email import is_valid_email
 
 class UserRepository(BaseUser):
 
-    def get_all() -> list[dict]:
+    def get_all(self) -> list[dict]:
         users_list = User.objects.values(
             'id',
             'username',
@@ -21,7 +21,7 @@ class UserRepository(BaseUser):
         )
         return users_list
 
-    def get(id) -> dict[str, any]:
+    def get(self, id) -> dict[str, any]:
         user = get_object_or_404(User, pk=id)
         serializer = UserRequestSerializer(user)
         return {
@@ -32,7 +32,7 @@ class UserRepository(BaseUser):
             'email': serializer.data['email'],
         }
 
-    def post(request) -> dict[str, any]:
+    def post(self, request) -> dict[str, any]:
         if is_valid_email(request.data['email']):
 
             serializer = UserRequestSerializer(data=request.data)
@@ -49,7 +49,7 @@ class UserRepository(BaseUser):
             }
         return
 
-    def update(request, user_id) -> dict[str, any]:
+    def update(self, request, user_id) -> dict[str, any]:
         user = get_object_or_404(User, pk=user_id)
         serializer = UserRequestSerializer(instance=user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -64,7 +64,7 @@ class UserRepository(BaseUser):
                 'email': user.email,
                 }
 
-    def delete(user_id) -> dict[str]:
+    def delete(self, user_id) -> dict[str]:
         user = get_object_or_404(User, pk=user_id)
         user_serializer = UserRequestSerializer(user)
         user.delete()

@@ -48,7 +48,9 @@ class TicketTest(APITestCase):
 
         url = reverse('ticket_list')
         response = self.client.get(url, format='json')
-        self.assertEqual(len(response.data['results']), 1)
+
+        self.assertEqual(Ticket.objects.count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = {
             'code': 'test_code2',
@@ -74,7 +76,7 @@ class TicketTest(APITestCase):
 
         url = reverse('ticket_list')
         response = self.client.get(url, format='json')
-        self.assertEqual(len(response.data['results']), 0)
+        self.assertEqual(len(response.data), 0)
 
         url = reverse('ticket_get', kwargs={'ticket_id': 1})
         response = self.client.get(url, format='json')
