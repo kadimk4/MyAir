@@ -8,21 +8,25 @@ class ShoppingRepository:
         self.request = amadeus.shopping
 
     def cheapest_flights(self, city_code: str):
-        return self.request.flight_destinations.get(origin=city_code)
+        request = self.request.flight_destinations.get(origin=city_code)
+        return request.data
 
     def favorable_flights_dates(self, city_code_from: str, city_code_to: str):
-        return self.request.flight_dates.get(origin=city_code_from, destination=city_code_to)
+        request = self.request.flight_dates.get(origin=city_code_from, destination=city_code_to)
+        return request.data
 
     def cheapest_journey(self, city_code_from: str, city_code_to: str, date: str, adults_count: str):
-        return self.request.flight_offers_search.get(
+        request = self.request.flight_offers_search.get(
             originLocationCode=city_code_from,
             destinationLocationCode=city_code_to,
             departureDate=date,
             adults=adults_count
         )
+        return request
 
     def predict_travel_choice(self, city_code_from: str, city_code_to: str, date: str, adults_count: int):
-        return self.request.flight_offers.prediction.post(self.cheapest_journey(city_code_from, city_code_to, date, adults_count).result)
+        request = self.request.flight_offers.prediction.post(self.cheapest_journey(city_code_from, city_code_to, date, adults_count).result)
+        return request.data
 
 
 
@@ -31,8 +35,8 @@ class TravelRepository:
     def __init__(self) -> None:
         self.request = amadeus.travel
 
-    def predict_travel_pupose(self, city_code_from: str, city_code_to: str, departure_date: str, arrival_date: str, search_date: str):
-        return self.request.predictions.trip_purpose.get(
+    def predict_travel_purpose(self, city_code_from: str, city_code_to: str, departure_date: str, arrival_date: str, search_date: str):
+        request = self.request.predictions.trip_purpose.get(
             originLocationCode=city_code_from,
             destinationLocationCode=city_code_to,
             departureDate=departure_date,
@@ -40,8 +44,18 @@ class TravelRepository:
             searchDate=search_date
         )
 
-    def predict_flight_delay(self, city_code_from: str, city_code_to: str, departure_date: str, departure_time: str, arrival_date: str, arrival_time: str, aircraft_code: str, carrier_code: str, flight_number: str, duration: str):
-        return self.request.predictions.flight_delay.get(
+        return request.data
+    def predict_flight_delay(self, city_code_from: str,
+                            city_code_to: str,
+                            departure_date: str,
+                            departure_time: str,
+                            arrival_date: str,
+                            arrival_time: str,
+                            aircraft_code: str,
+                            carrier_code: str,
+                            flight_number: str,
+                            duration: str):
+        request = self.request.predictions.flight_delay.get(
             originLocationCode=city_code_from,
             destinationLocationCode=city_code_to,
             departureDate=departure_date,
@@ -53,6 +67,7 @@ class TravelRepository:
             flightNumber=flight_number,
             duration=duration
         )
+        return request.data
 
 
 class ReferenceDataRepository:
@@ -61,19 +76,24 @@ class ReferenceDataRepository:
         self.request = amadeus.reference_data
 
     def details_airport(self, airport_code: str):
-        return self.request.location(airport_code).get()
+        request = self.request.location(airport_code).get()
+        return request.data
 
     def list_near_airports(self, longitude: float, latitude: float):
-        return self.request.locations.airports.get(longitude=longitude, latitude=latitude)
+        request = self.request.locations.airports.get(longitude=longitude, latitude=latitude)
+        return request.data
 
     def checkin_links(self, airline_code: str, language: str = 'en-GB'):
-        return self.request.urls.checkin_links.get(airlineCode=airline_code, language=language)
+        request = self.request.urls.checkin_links.get(airlineCode=airline_code, language=language)
+        return request.data
 
     def recommended_locations(self, city_code: str, country_code: str):
-        return self.request.recommended_locations.get(cityCodes=city_code, travelerCountryCode=country_code)
+        request = self.request.recommended_locations.get(cityCodes=city_code, travelerCountryCode=country_code)
+        return request.data
 
     def list_city_hotels(self, city_code: str):
-        return self.request.locations.hotel.get(keyword=city_code, subType=[Hotel.HOTEL_LEISURE, Hotel.HOTEL_GDS])
+        request = self.request.locations.hotel.get(keyword=city_code, subType=[Hotel.HOTEL_LEISURE, Hotel.HOTEL_GDS])
+        return request.data
 
 
 class AirportRepository:
@@ -82,7 +102,9 @@ class AirportRepository:
         self.request = amadeus.airport
 
     def percentage_ofontime_departures(self, airport_code: str, date: str):
-        return self.request.predictions.on_time.get(airportCode=airport_code, date=date)
+        request = self.request.predictions.on_time.get(airportCode=airport_code, date=date)
+        return request.data
 
     def airport_direct(self, airport_code: str):
-        return self.request.direct_destinations.get(airport_code)
+        request = self.request.direct_destinations.get(departureAirportCode=airport_code)
+        return request.data
