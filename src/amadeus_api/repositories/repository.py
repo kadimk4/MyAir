@@ -1,5 +1,5 @@
 from amadeus import Hotel
-from api.main import amadeus
+from amadeus_api.api.main import amadeus
 
 
 class ShoppingRepository:
@@ -13,8 +13,8 @@ class ShoppingRepository:
     def favorable_flights_dates(self, city_code_from: str, city_code_to: str):
         return self.request.flight_dates.get(origin=city_code_from, destination=city_code_to)
 
-    def cheapest_journey(self, city_code_from: str, city_code_to: str, date: str, adults_count: int):
-        self.request.flight_offers_search.get(
+    def cheapest_journey(self, city_code_from: str, city_code_to: str, date: str, adults_count: str):
+        return self.request.flight_offers_search.get(
             originLocationCode=city_code_from,
             destinationLocationCode=city_code_to,
             departureDate=date,
@@ -22,10 +22,8 @@ class ShoppingRepository:
         )
 
     def predict_travel_choice(self, city_code_from: str, city_code_to: str, date: str, adults_count: int):
-        return self.request.flight_offers.prediction.post(self.cheapest_journey(city_code_from, city_code_to, date, adults_count))
+        return self.request.flight_offers.prediction.post(self.cheapest_journey(city_code_from, city_code_to, date, adults_count).result)
 
-    def available_seats(self, body):
-        return self.request.availability.flight_availabilities.post(body)
 
 
 class TravelRepository:
@@ -42,7 +40,7 @@ class TravelRepository:
             searchDate=search_date
         )
 
-    def predinct_flight_delay(self, city_code_from: str, city_code_to: str, departure_date: str, departure_time: str, arrival_date: str, arrival_time: str, aircraft_code: str, carrier_code: str, flight_number: str, duration: str):
+    def predict_flight_delay(self, city_code_from: str, city_code_to: str, departure_date: str, departure_time: str, arrival_date: str, arrival_time: str, aircraft_code: str, carrier_code: str, flight_number: str, duration: str):
         return self.request.predictions.flight_delay.get(
             originLocationCode=city_code_from,
             destinationLocationCode=city_code_to,
