@@ -42,9 +42,9 @@ repos:
         args: ["--ignore=E501,F821", "--max-line-length=120"]
 
 # Проверка статических типов с помощью mypy
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v0.971
-  hooks:
-    - id: mypy
-      additional_dependencies:
-      - django-stubs
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.971
+    hooks:
+    -   id: mypy
+        additional_dependencies:
+        - django-stubs
