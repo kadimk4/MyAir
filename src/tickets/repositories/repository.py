@@ -16,7 +16,7 @@ class TicketRepository(BaseTicket):
         )
         return ticket_list
 
-    def get(self, ticket_id) -> dict[str, any]:
+    def get(self, ticket_id) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketRequestSerializer(ticket)
         return {
@@ -26,7 +26,7 @@ class TicketRepository(BaseTicket):
             'date': serializer.data['date'],
         }
 
-    def post(self, request) -> dict[str, any]:
+    def post(self, request) -> dict[str, str]:
         serializer = TicketRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -38,7 +38,7 @@ class TicketRepository(BaseTicket):
             'date': request.data['date'],
         }
 
-    def update(self, request, ticket_id) -> dict[str, any]:
+    def update(self, request, ticket_id) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketRequestSerializer(instance=ticket, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -52,7 +52,7 @@ class TicketRepository(BaseTicket):
             'date': serializer.data['date'],
         }
 
-    def delete(self, ticket_id) -> dict[str, any]:
+    def delete(self, ticket_id) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         ticket_data = TicketRequestSerializer(ticket)
         ticket.delete()

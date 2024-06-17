@@ -4,21 +4,21 @@ from abc import ABC, abstractmethod
 class BaseRepository(ABC):
 
     @abstractmethod
-    def get():
-        pass
+    def get(self, *args, **kwargs) -> dict | None:
+        raise NotImplementedError
 
     @abstractmethod
-    def get_all():
-        pass
+    def get_all(self, *args, **kwargs) -> list:
+        raise NotImplementedError
 
     @abstractmethod
-    def post():
-        pass
+    def post(self, *args, **kwargs) -> dict | None:
+        raise NotImplementedError
 
     @abstractmethod
-    def update():
-        pass
+    def update(self, *args, **kwargs) -> dict | None:
+        raise NotImplementedError
 
     @abstractmethod
-    def delete():
-        pass
+    def delete(self, *args, **kwargs) -> dict | None:
+        raise NotImplementedError

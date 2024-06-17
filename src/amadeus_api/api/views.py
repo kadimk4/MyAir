@@ -1,139 +1,138 @@
-from amadeus import Location
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView, ListAPIView
 from drf_spectacular.views import extend_schema
-from amadeus_api.api.main import amadeus
+from rest_framework import status
+from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from amadeus_api.models import BaseFlightOfferPagination
+from core.factories.amadeus_factory import AmadeusFactory
 
-from core.factories.rep_factory import RepositoryFactory
-
-
-@extend_schema(tags=['Amadeus'])
-class SelfView(APIView):
-    def get(self, request):
-        response = amadeus.reference_data.locations.get(
-            keyword='LON',
-            subType=Location.AIRPORT
-        )
-        return Response(data=response.body, status=status.HTTP_200_OK)
 
 @extend_schema(tags=['Amadeus'])
-class SelfViewCheapest_flights(GenericAPIView):
+class CheapestFlightsView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_shopping')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_shopping')
         response = repository.cheapest_flights(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewFavorable_flights_dates(ListAPIView):
+class FavorableFlightsDatesView(ListAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_shopping')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_shopping')
         response = repository.favorable_flights_dates(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewCheapest_journey(GenericAPIView):
+class CheapestJourneyView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_shopping')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_shopping')
         response = repository.cheapest_journey(**parameters)
         return Response(data=response.data, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewPredict_travel_choice(GenericAPIView):
+class PredictTravelChoiceView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_shopping')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_shopping')
         response = repository.predict_travel_choice(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewPredict_travel_purpose(GenericAPIView):
+class PredictTravelPurposeView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_travel')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_travel')
         response = repository.predict_travel_purpose(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewPredict_flight_delay(GenericAPIView):
+class PredictFlightDelayView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_travel')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_travel')
         response = repository.predict_flight_delay(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewDetails_airport(GenericAPIView):
+class DetailsAirportView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_reference')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_reference')
         response = repository.details_airport(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewList_near_airports(GenericAPIView):
+class ListNearAirportsView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_reference')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_reference')
         response = repository.list_near_airports(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewCheckin_links(GenericAPIView):
+class CheckinLinksView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_reference')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_reference')
         response = repository.checkin_links(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewRecommended_locations(GenericAPIView):
+class RecommendedLocationsView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_reference')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_reference')
         response = repository.recommended_locations(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewList_city_hotels(GenericAPIView):
+class ListCityHotelsView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_reference')
+
+    def get(self, request: Request, **parameters: str) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_reference')
         response = repository.list_city_hotels(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewPercentage_ofontime_departures(GenericAPIView):
+class PercentageOnTimeDeparturesView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self, request, **parameters):
-        repository = RepositoryFactory.create('amadeus_airport')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_airport')
         response = repository.percentage_ofontime_departures(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
+
 @extend_schema(tags=['Amadeus'])
-class SelfViewAirport_direct(GenericAPIView):
+class AirportDirectView(GenericAPIView):
     pagination_class = BaseFlightOfferPagination
-    
-    def get(self,request, **parameters):
-        repository = RepositoryFactory.create('amadeus_airport')
+
+    def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
+        repository = AmadeusFactory.create('amadeus_airport')
         response = repository.airport_direct(**parameters)
-        print(response)
         return Response(data=response, status=status.HTTP_200_OK)

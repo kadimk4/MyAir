@@ -1,17 +1,19 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
+from rest_framework.request import Request
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema
+
 from core.factories.rep_factory import RepositoryFactory
-from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 from users.api.serializers import UserRequestSerializer, UserResponseSerializer
 from users.models import BaseUserPagination
+from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Users'])
 class SelfListView(GenericAPIView):
 
-    def get(self, request):
+    def get(self, request: Request) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('user')
         queryset = repository.get_all()
         return Response(data=queryset, status=status.HTTP_200_OK)
@@ -29,7 +31,7 @@ class SelfView(GenericAPIView):
         parameters=SelfViewSchema()
 
     )
-    def get(self, request, id):
+    def get(self, request: Request, id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('user')
         serializer = repository.get(id)
         return Response(data=serializer, status=status.HTTP_200_OK)
@@ -42,7 +44,7 @@ class SelfCreateView(GenericAPIView):
     @extend_schema(
         request=SelfCreateViewSchema()
     )
-    def post(self, request):
+    def post(self, request: Request) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('user')
         serializer = repository.post(request)
         if serializer:
