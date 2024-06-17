@@ -5,9 +5,12 @@ from tickets.models import Ticket
 
 
 class TicketRequestSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+
     class Meta:
         model: Model = Ticket
         fields: list[str] = [
+            'id',
             'code',
             'place_code',
             'user_id',

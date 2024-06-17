@@ -12,6 +12,7 @@ class TicketRepository(BaseTicket):
         ticket_list = Ticket.objects.values(
             'id',
             'code',
+            'place_code',
             'user_id',
             'date'
         )

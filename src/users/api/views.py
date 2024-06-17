@@ -1,25 +1,27 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import status
+from rest_framework import mixins, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from core.factories.rep_factory import RepositoryFactory
+from core.pagination import BasePagination
 from users.api.serializers import UserRequestSerializer, UserResponseSerializer
-from users.models import BaseUserPagination
 from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Users'])
-class SelfListView(GenericAPIView):
-
-    def get(self, request: Request) -> Response[list[dict[str, str]]]:
-        repository = RepositoryFactory.create('user')
-        queryset = repository.get_all()
-        return Response(data=queryset, status=status.HTTP_200_OK)
-
+class SelfListView(mixins.ListModelMixin, GenericAPIView):
+    pagination_class = BasePagination
     serializer_class = UserResponseSerializer
-    pagination_class = BaseUserPagination
+
+    def get_queryset(self) -> list[dict[str, str]]:
+        repository = RepositoryFactory.create('user')
+        return repository.get_all()
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        print(request.data, args, kwargs)
+        return self.list(request, *args, **kwargs)
 
 
 @extend_schema(tags=['Users'])

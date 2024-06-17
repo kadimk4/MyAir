@@ -4,13 +4,11 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from amadeus_api.models import BaseFlightOfferPagination
 from core.factories.amadeus_factory import AmadeusFactory
 
 
 @extend_schema(tags=['Amadeus'])
 class CheapestFlightsView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_shopping')
@@ -20,7 +18,6 @@ class CheapestFlightsView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class FavorableFlightsDatesView(ListAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_shopping')
@@ -30,7 +27,6 @@ class FavorableFlightsDatesView(ListAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class CheapestJourneyView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_shopping')
@@ -40,7 +36,6 @@ class CheapestJourneyView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class PredictTravelChoiceView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_shopping')
@@ -50,7 +45,6 @@ class PredictTravelChoiceView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class PredictTravelPurposeView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_travel')
@@ -60,7 +54,6 @@ class PredictTravelPurposeView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class PredictFlightDelayView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_travel')
@@ -70,7 +63,6 @@ class PredictFlightDelayView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class DetailsAirportView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_reference')
@@ -80,7 +72,6 @@ class DetailsAirportView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class ListNearAirportsView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_reference')
@@ -90,7 +81,6 @@ class ListNearAirportsView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class CheckinLinksView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_reference')
@@ -100,7 +90,6 @@ class CheckinLinksView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class RecommendedLocationsView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_reference')
@@ -110,7 +99,6 @@ class RecommendedLocationsView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class ListCityHotelsView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: str) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_reference')
@@ -120,7 +108,6 @@ class ListCityHotelsView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class PercentageOnTimeDeparturesView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_airport')
@@ -130,7 +117,6 @@ class PercentageOnTimeDeparturesView(GenericAPIView):
 
 @extend_schema(tags=['Amadeus'])
 class AirportDirectView(GenericAPIView):
-    pagination_class = BaseFlightOfferPagination
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_airport')

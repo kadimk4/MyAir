@@ -1,5 +1,5 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import status
+from rest_framework import mixins, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
@@ -7,21 +7,22 @@ from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from core.factories.rep_factory import RepositoryFactory
-from tickets.api.serializers import TicketRequestSerializer
-from tickets.models import BaseTicketPagination
+from core.pagination import BasePagination
+from tickets.api.serializers import TicketRequestSerializer, TicketResponseSerializer
 from tickets.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Tickets'])
-class SelfListView(GenericAPIView):
-
-    def get(self, request: Request) -> Response[list[dict[str, str]]]:
-        repository = RepositoryFactory.create('ticket')
-        queryset = repository.get_all()
-        return Response(data=queryset, status=status.HTTP_200_OK)
-
+class SelfListView(mixins.ListModelMixin, GenericAPIView):
+    pagination_class: PageNumberPagination = BasePagination
     serializer_class: ModelSerializer = TicketRequestSerializer
-    pagination_class: PageNumberPagination = BaseTicketPagination
+
+    def get_queryset(self) -> list[dict[str, str]]:
+        repository = RepositoryFactory.create('ticket')
+        return repository.get_all()
+
+    def get(self, request: Request, *args, **kwargs) -> Response:
+        return self.list(request, *args, **kwargs)
 
 
 @extend_schema(tags=['Tickets'])
@@ -39,7 +40,7 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketResponseSerializer
 
     @extend_schema(
         request=SelfCreateViewSchema()
@@ -54,7 +55,7 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketResponseSerializer
 
     @extend_schema(
         parameters=SelfViewSchema(),
