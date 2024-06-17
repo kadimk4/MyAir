@@ -22,6 +22,7 @@ class ShoppingRepository:
             departureDate=date,
             adults=adults_count
         )
+        print(request, type(request))
         return request
 
     def predict_travel_choice(self, city_code_from: str, city_code_to: str, date: str, adults_count: int):
