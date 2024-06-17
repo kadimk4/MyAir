@@ -60,7 +60,7 @@ class SelfUpdateDeleteView(GenericAPIView):
         parameters=SelfViewSchema(),
         request=SelfUpdateViewSchema()
     )
-    def patch(self, request, id):
+    def patch(self, request: Request, id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('user')
         serializer = repository.update(request, id)
         return Response(serializer, status=status.HTTP_200_OK)
@@ -68,7 +68,7 @@ class SelfUpdateDeleteView(GenericAPIView):
     @extend_schema(
         parameters=SelfViewSchema()
     )
-    def delete(self, request, id):
+    def delete(self, request: Request, id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('user')
         serializer = repository.delete(id)
         return Response(serializer, status=status.HTTP_200_OK)
