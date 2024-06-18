@@ -2,11 +2,11 @@ from django.db.models import Model
 from rest_framework import serializers
 
 from tickets.models import Ticket
+from users.models import User
 
 
-class TicketGetSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
-
+class TicketRequestSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model: Model = Ticket
         fields: list[str] = [
@@ -19,8 +19,7 @@ class TicketGetSerializer(serializers.ModelSerializer):
         ]
 
 
-class TicketSerializer(serializers.ModelSerializer):
-
+class TicketResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model: Model = Ticket
         fields: list[str] = [
@@ -28,5 +27,4 @@ class TicketSerializer(serializers.ModelSerializer):
             'departure_date',
             'duration',
             'price',
-            'user_id'
         ]
