@@ -1,9 +1,12 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 
+from core.factories.amadeus_factory import AmadeusFactory
 from tickets.api.serializers import TicketSerializer
 from tickets.models import Ticket
 from tickets.repositories.interface import BaseTicket
+from tickets.services.generator import generate_ticket_data
+
 
 
 class TicketRepository(BaseTicket):
@@ -12,9 +15,10 @@ class TicketRepository(BaseTicket):
         ticket_list = Ticket.objects.values(
             'id',
             'code',
-            'place_code',
-            'user_id',
-            'date'
+            'departure_date',
+            'duration',
+            'price',
+            'user_id'
         )
         return ticket_list
 
@@ -23,9 +27,10 @@ class TicketRepository(BaseTicket):
         serializer = TicketSerializer(ticket)
         return {
             'code': serializer.data['code'],
-            'place_code': serializer.data['place_code'],
-            'user_id': serializer.data['user_id'],
-            'date': serializer.data['date'],
+            'departure_date': serializer.data['departure_date'],
+            'duration': serializer.data['duration'],
+            'price': serializer.data['price'],
+            'user_id': serializer.data['user_id']
         }
 
     def post(self, request: Request) -> dict[str, str]:
@@ -34,10 +39,11 @@ class TicketRepository(BaseTicket):
 
         serializer.save()
         return {
-            'code': request.data['code'],
-            'place_code': request.data['place_code'],
-            'user_id': request.data['user_id'],
-            'date': request.data['date'],
+            'code': serializer.data['code'],
+            'departure_date': serializer.data['departure_date'],
+            'duration': serializer.data['duration'],
+            'price': serializer.data['price'],
+            'user_id': serializer.data['user_id']
         }
 
     def update(self, request: Request, ticket_id: int) -> dict[str, str]:
@@ -49,9 +55,10 @@ class TicketRepository(BaseTicket):
 
         return {
             'code': serializer.data['code'],
-            'place_code': serializer.data['place_code'],
-            'user_id': serializer.data['user_id'],
-            'date': serializer.data['date'],
+            'departure_date': serializer.data['departure_date'],
+            'duration': serializer.data['duration'],
+            'price': serializer.data['price'],
+            'user_id': serializer.data['user_id']
         }
 
     def delete(self, ticket_id: int) -> dict[str, str]:
@@ -60,7 +67,27 @@ class TicketRepository(BaseTicket):
         ticket.delete()
         return {
             'code': ticket_data.data['code'],
-            'place_code': ticket_data.data['place_code'],
-            'user_id': ticket_data.data['user_id'],
-            'date': ticket_data.data['date'],
+            'departure_date': ticket_data.data['departure_date'],
+            'duration': ticket_data.data['duration'],
+            'price': ticket_data.data['price'],
+            'user_id': ticket_data.data['user_id']
         }
+
+    def get_ticket(self, request: Request) -> dict[str, str]:
+        repository = AmadeusFactory.create('amadeus_shopping')
+        data = request.data.dict()
+        response = repository.cheapest_journey(**data).result['data'][0]
+        ticket = generate_ticket_data(response)
+        ticket['user_id'] = request.user.id
+        ticket['departure_date'] = data['date']
+        ticket_data = TicketSerializer(data=ticket)
+        ticket_data.is_valid(raise_exception=True)
+        ticket_data.save()
+        return {
+            'code': ticket_data.data['code'],
+            'departure_date': ticket_data.data['departure_date'],
+            'duration': ticket_data.data['duration'],
+            'price': ticket_data.data['price'],
+            'user_id': ticket_data.data['user_id'],
+        }
+        

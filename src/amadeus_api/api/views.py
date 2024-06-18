@@ -7,16 +7,15 @@ from rest_framework.response import Response
 from core.factories.amadeus_factory import AmadeusFactory
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Shopping'])
 class CheapestFlightsView(GenericAPIView):
-
+    
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
         repository = AmadeusFactory.create('amadeus_shopping')
         response = repository.cheapest_flights(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
-
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Shopping'])
 class FavorableFlightsDatesView(ListAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -25,7 +24,7 @@ class FavorableFlightsDatesView(ListAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Shopping'])
 class CheapestJourneyView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -34,7 +33,7 @@ class CheapestJourneyView(GenericAPIView):
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Shopping'])
 class PredictTravelChoiceView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -43,7 +42,7 @@ class PredictTravelChoiceView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Travel'])
 class PredictTravelPurposeView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -52,7 +51,7 @@ class PredictTravelPurposeView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Travel'])
 class PredictFlightDelayView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -61,7 +60,7 @@ class PredictFlightDelayView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Reference'])
 class DetailsAirportView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -70,7 +69,7 @@ class DetailsAirportView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Reference'])
 class ListNearAirportsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -79,7 +78,7 @@ class ListNearAirportsView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Reference'])
 class CheckinLinksView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -88,7 +87,7 @@ class CheckinLinksView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Reference'])
 class RecommendedLocationsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -97,7 +96,7 @@ class RecommendedLocationsView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Reference'])
 class ListCityHotelsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: str) -> Response[list[dict[str, str]]]:
@@ -106,7 +105,7 @@ class ListCityHotelsView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Airport'])
 class PercentageOnTimeDeparturesView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
@@ -115,7 +114,7 @@ class PercentageOnTimeDeparturesView(GenericAPIView):
         return Response(data=response, status=status.HTTP_200_OK)
 
 
-@extend_schema(tags=['Amadeus'])
+@extend_schema(tags=['Airport'])
 class AirportDirectView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
