@@ -8,14 +8,14 @@ from rest_framework.serializers import ModelSerializer
 
 from core.factories.rep_factory import RepositoryFactory
 from core.pagination import BasePagination
-from tickets.api.serializers import TicketRequestSerializer, TicketResponseSerializer
+from tickets.api.serializers import TicketGetSerializer, TicketSerializer
 from tickets.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Tickets'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class: PageNumberPagination = BasePagination
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('ticket')
@@ -27,7 +27,7 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(
         parameters=SelfViewSchema()
@@ -40,7 +40,7 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketResponseSerializer
+    serializer_class: ModelSerializer = TicketSerializer
 
     @extend_schema(
         request=SelfCreateViewSchema()
@@ -55,7 +55,7 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketResponseSerializer
+    serializer_class: ModelSerializer = TicketSerializer
 
     @extend_schema(
         parameters=SelfViewSchema(),

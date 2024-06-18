@@ -1,7 +1,7 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 
-from tickets.api.serializers import TicketRequestSerializer
+from tickets.api.serializers import TicketSerializer
 from tickets.models import Ticket
 from tickets.repositories.interface import BaseTicket
 
@@ -20,7 +20,7 @@ class TicketRepository(BaseTicket):
 
     def get(self, ticket_id: int) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
-        serializer = TicketRequestSerializer(ticket)
+        serializer = TicketSerializer(ticket)
         return {
             'code': serializer.data['code'],
             'place_code': serializer.data['place_code'],
@@ -29,7 +29,7 @@ class TicketRepository(BaseTicket):
         }
 
     def post(self, request: Request) -> dict[str, str]:
-        serializer = TicketRequestSerializer(data=request.data)
+        serializer = TicketSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
@@ -42,7 +42,7 @@ class TicketRepository(BaseTicket):
 
     def update(self, request: Request, ticket_id: int) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
-        serializer = TicketRequestSerializer(instance=ticket, data=request.data, partial=True)
+        serializer = TicketSerializer(instance=ticket, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
@@ -56,7 +56,7 @@ class TicketRepository(BaseTicket):
 
     def delete(self, ticket_id: int) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
-        ticket_data = TicketRequestSerializer(ticket)
+        ticket_data = TicketSerializer(ticket)
         ticket.delete()
         return {
             'code': ticket_data.data['code'],

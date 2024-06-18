@@ -6,27 +6,26 @@ from rest_framework.response import Response
 
 from core.factories.rep_factory import RepositoryFactory
 from core.pagination import BasePagination
-from users.api.serializers import UserRequestSerializer, UserResponseSerializer
+from users.api.serializers import UserListSerializer, UserSerializer
 from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
 @extend_schema(tags=['Users'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = BasePagination
-    serializer_class = UserResponseSerializer
+    serializer_class = UserListSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('user')
         return repository.get_all()
 
     def get(self, request: Request, *args, **kwargs) -> Response:
-        print(request.data, args, kwargs)
         return self.list(request, *args, **kwargs)
 
 
 @extend_schema(tags=['Users'])
 class SelfView(GenericAPIView):
-    serializer_class = UserRequestSerializer
+    serializer_class = UserSerializer
 
     @extend_schema(
 
@@ -41,7 +40,7 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfCreateView(GenericAPIView):
-    serializer_class = UserRequestSerializer
+    serializer_class = UserSerializer
 
     @extend_schema(
         request=SelfCreateViewSchema()
@@ -56,7 +55,7 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class = UserRequestSerializer
+    serializer_class = UserSerializer
 
     @extend_schema(
         parameters=SelfViewSchema(),

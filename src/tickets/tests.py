@@ -32,11 +32,12 @@ class TicketTest(APITestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        user = User.objects.get(username='gipo')
         url = reverse('ticket_post')
         data = {
             'code': 'test_code',
             'place_code': 'test_placecode',
-            'user_id': 1,
+            'user_id': user.id,
             'date': '2024-06-14'
         }
         response = self.client.post(url, data, format='json')
@@ -55,7 +56,7 @@ class TicketTest(APITestCase):
         data = {
             'code': 'test_code2',
             'place_code': 'test_placecode2',
-            'user_id': 1,
+            'user_id': user.id,
             'date': '2024-06-15'
         }
         url = reverse('ticket_update', kwargs={'ticket_id': 1})
@@ -76,7 +77,7 @@ class TicketTest(APITestCase):
 
         url = reverse('ticket_list')
         response = self.client.get(url, format='json')
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(len(response.data['results']), 0)
 
         url = reverse('ticket_get', kwargs={'ticket_id': 1})
         response = self.client.get(url, format='json')

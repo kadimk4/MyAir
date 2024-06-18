@@ -3,7 +3,7 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 
-from users.api.serializers import UserRequestSerializer
+from users.api.serializers import UserSerializer
 from users.models import User
 from users.repositories.interface import BaseUser
 from users.services.email import is_valid_email
@@ -24,7 +24,7 @@ class UserRepository(BaseUser):
 
     def get(self, id: int) -> dict[str, str]:
         user = get_object_or_404(User, pk=id)
-        serializer = UserRequestSerializer(user)
+        serializer = UserSerializer(user)
         return {
             'username': serializer.data['username'],
             'first_name': serializer.data['first_name'],
@@ -36,7 +36,7 @@ class UserRepository(BaseUser):
     def post(self, request: Request) -> dict[str, str] | None:
         if is_valid_email(request.data['email']):
 
-            serializer = UserRequestSerializer(data=request.data)
+            serializer = UserSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
             serializer.save()
@@ -52,7 +52,7 @@ class UserRepository(BaseUser):
 
     def update(self, request: Request, user_id: int) -> dict[str, str]:
         user = get_object_or_404(User, pk=user_id)
-        serializer = UserRequestSerializer(instance=user, data=request.data, partial=True)
+        serializer = UserSerializer(instance=user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
@@ -67,7 +67,7 @@ class UserRepository(BaseUser):
 
     def delete(self, user_id: int) -> dict[str, str]:
         user = get_object_or_404(User, pk=user_id)
-        user_serializer = UserRequestSerializer(user)
+        user_serializer = UserSerializer(user)
         user.delete()
         return {'id': user_serializer.data['id'],
                 'username': user_serializer.data['username'],

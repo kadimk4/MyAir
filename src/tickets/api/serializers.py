@@ -4,7 +4,7 @@ from rest_framework import serializers
 from tickets.models import Ticket
 
 
-class TicketRequestSerializer(serializers.ModelSerializer):
+class TicketGetSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
 
     class Meta:
@@ -18,7 +18,7 @@ class TicketRequestSerializer(serializers.ModelSerializer):
         ]
 
 
-class TicketResponseSerializer(serializers.ModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model: Model = Ticket
         fields: list[str] = [

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from users.models import User
 
 
-class UserResponseSerializer(serializers.ModelSerializer):
+class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
@@ -16,7 +16,7 @@ class UserResponseSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserRequestSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
