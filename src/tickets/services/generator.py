@@ -1,5 +1,5 @@
 import re
-
+from rest_framework.request import Request
 
 def generate_code(data: dict[str, str]) -> str:
     segment = data['itineraries'][0]['segments'][0]
@@ -27,13 +27,15 @@ def parse_duration(data: str) -> str:
     
     return duration
 
-def generate_ticket_data(data: dict[str, str]) -> dict[str, str]:
+def generate_ticket_data(data: dict[str, str], request: Request) -> dict[str, str]:
     duration = parse_duration(data)
     code_str = generate_code(data)
     
     ticket = {
             'code': code_str,
             'duration': duration,
+            'user_id': request.user.id,
+            'departure_date': data['itineraries'][0]['segments'][0]['departure']['at'].split('T')[0],
             'price': data['price']['total'],
         }
     return ticket

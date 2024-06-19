@@ -8,14 +8,14 @@ from rest_framework.serializers import ModelSerializer
 
 from core.factories.rep_factory import RepositoryFactory
 from core.pagination import BasePagination
-from tickets.api.serializers import TicketRequestSerializer, TicketResponseSerializer
+from tickets.api.serializers import TicketGetSerializer, TicketSerializer
 from tickets.schemas import SelfAMADEUSViewSchema, SelfViewSchema, SelfViewSchemaID
 
 
 @extend_schema(tags=['Tickets'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class: PageNumberPagination = BasePagination
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('ticket')
@@ -27,10 +27,10 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
     @extend_schema(
         parameters=SelfViewSchemaID(),
-        responses=TicketResponseSerializer
+        responses=TicketSerializer
     )
     def get(self, request: Request, ticket_id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('ticket')
@@ -40,14 +40,14 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer 
+    serializer_class: ModelSerializer = TicketGetSerializer 
     @extend_schema(
         request=SelfAMADEUSViewSchema(),
-        responses=TicketResponseSerializer
+        responses=TicketSerializer
     )
     def post(self, request: Request) -> dict[str, str]:
         repository = RepositoryFactory.create('ticket')
-        serializer = repository.get_ticket(request)
+        serializer = repository.post(request)
         if serializer:
             return Response(data=serializer, status=status.HTTP_201_CREATED)
         return Response(data=serializer, status=status.HTTP_400_BAD_REQUEST)
@@ -55,11 +55,11 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketRequestSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
     @extend_schema(
         parameters=SelfViewSchemaID(),
         request=SelfViewSchema(),
-        responses=TicketResponseSerializer
+        responses=TicketSerializer
     )
     def patch(self, request: Request, ticket_id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('ticket')
@@ -68,7 +68,7 @@ class SelfUpdateDeleteView(GenericAPIView):
 
     @extend_schema(
         parameters=SelfViewSchemaID(),
-        responses=TicketResponseSerializer
+        responses=TicketSerializer
     )
     def delete(self, request: Request, ticket_id: int) -> Response[list[dict[str, str]]]:
         repository = RepositoryFactory.create('ticket')

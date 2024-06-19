@@ -5,8 +5,8 @@ from tickets.models import Ticket
 from users.models import User
 
 
-class TicketRequestSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+class TicketGetSerializer(serializers.ModelSerializer):
+
     class Meta:
         model: Model = Ticket
         fields: list[str] = [
@@ -19,7 +19,7 @@ class TicketRequestSerializer(serializers.ModelSerializer):
         ]
 
 
-class TicketResponseSerializer(serializers.ModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model: Model = Ticket
         fields: list[str] = [
