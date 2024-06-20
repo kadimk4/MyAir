@@ -1,5 +1,6 @@
 DC = docker compose
 STORAGES_FILE = docker_compose/storages.yaml
+KAFKA_FILE = docker_compose/kafka.yaml
 TESTS_FILE = docker_compose/tests.yaml
 EXEC = docker exec -it
 DB_CONTAINER = postgres
@@ -17,10 +18,6 @@ storages:
 .PHONY: storages-down
 storages-down:
 	${DC} -f ${STORAGES_FILE} down
-
-.PHONY: postgres
-postgres:
-	${EXEC} ${DB_CONTAINER} psql
 
 .PHONY: storages-logs
 storages-logs:
@@ -65,3 +62,15 @@ migrate:
 .PHONY: migrations
 migrations:
 	cd src && ${MANAGE_PY} makemigrations
+
+.PHONY: kafka
+kafka:
+	${DC} -f ${KAFKA_FILE} ${ENV} up -d
+
+.PHONY: kafka-down
+kafka-down:
+	${DC} -f ${KAFKA_FILE} down
+
+.PHONY: kafka-logs
+kafka-logs:
+	${DC} logs $(shell ${DC} ps --services | grep kafka)
