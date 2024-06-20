@@ -1,6 +1,12 @@
-from auth.view import LoginView, LogoutView
 from django.urls import path
-from users.api.views import SelfCreateView, SelfListView, SelfUpdateDeleteView, SelfView
+
+from apps.auth.view import LoginView, LogoutView
+from apps.users.api.views import (
+    SelfCreateView,
+    SelfListView,
+    SelfUpdateDeleteView,
+    SelfView,
+)
 
 urlpatterns = [
     path('users/', SelfListView.as_view(), name='users-list'),

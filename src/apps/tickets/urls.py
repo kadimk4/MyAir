@@ -1,5 +1,6 @@
 from django.urls import path
-from tickets.api.views import (
+
+from apps.tickets.api.views import (
     SelfCreateView,
     SelfListView,
     SelfUpdateDeleteView,

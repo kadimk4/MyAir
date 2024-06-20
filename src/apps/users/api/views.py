@@ -4,9 +4,13 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from users.api.serializers import UserListSerializer, UserSerializer
-from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
+from apps.users.api.serializers import UserListSerializer, UserSerializer
+from apps.users.schemas import (
+    SelfCreateViewSchema,
+    SelfUpdateViewSchema,
+    SelfViewSchema,
+)
 from utils.factories.rep_factory import RepositoryFactory
 from utils.pagination import BasePagination
 

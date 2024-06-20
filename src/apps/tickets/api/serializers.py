@@ -1,6 +1,7 @@
 from django.db.models import Model
 from rest_framework import serializers
-from tickets.models import Ticket
+
+from apps.tickets.models import Ticket
 
 
 class TicketGetSerializer(serializers.ModelSerializer):

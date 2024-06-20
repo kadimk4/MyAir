@@ -5,9 +5,9 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
-from tickets.api.serializers import TicketGetSerializer, TicketSerializer
-from tickets.schemas import SelfAMADEUSViewSchema, SelfViewSchema, SelfViewSchemaID
 
+from apps.tickets.api.serializers import TicketGetSerializer, TicketSerializer
+from apps.tickets.schemas import SelfAMADEUSViewSchema, SelfViewSchema, SelfViewSchemaID
 from utils.factories.rep_factory import RepositoryFactory
 from utils.pagination import BasePagination
 

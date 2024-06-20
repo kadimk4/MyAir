@@ -1,4 +1,6 @@
-from amadeus_api.api.views import (
+from django.urls import path
+
+from apps.amadeus_api.api.views import (
     AirportDirectView,
     CheapestFlightsView,
     CheapestJourneyView,
@@ -13,7 +15,6 @@ from amadeus_api.api.views import (
     PredictTravelPurposeView,
     RecommendedLocationsView,
 )
-from django.urls import path
 
 urlpatterns = [
     path('amadeus/cheapest_flights/<str:city_code>', CheapestFlightsView.as_view(), name='cheapest_flights'),

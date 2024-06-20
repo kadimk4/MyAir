@@ -1,10 +1,10 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
-from tickets.api.serializers import TicketGetSerializer
-from tickets.models import Ticket
-from tickets.repositories.interface import BaseTicket
-from tickets.services.generator import generate_ticket_data
 
+from apps.tickets.api.serializers import TicketGetSerializer
+from apps.tickets.models import Ticket
+from apps.tickets.repositories.interface import BaseTicket
+from apps.tickets.services.generator import generate_ticket_data
 from utils.factories.amadeus_factory import AmadeusFactory
 
 

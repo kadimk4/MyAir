@@ -1,6 +1,6 @@
 from typing import Any
 
-from amadeus_api.repositories.repository import (
+from apps.amadeus_api.repositories.repository import (
     AirportRepository,
     ReferenceDataRepository,
     ShoppingRepository,

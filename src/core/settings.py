@@ -1,5 +1,6 @@
-from app.conf.environ import env
 from split_settings.tools import include
+
+from core.conf.environ import env
 
 include(
     'conf/api.py',

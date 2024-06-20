@@ -1,4 +1,4 @@
-from app.conf.environ import env
+from core.conf.environ import env
 
 DATABASES = {
     'default': {

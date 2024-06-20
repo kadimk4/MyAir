@@ -2,10 +2,11 @@
 
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
-from users.api.serializers import UserSerializer
-from users.models import User
-from users.repositories.interface import BaseUser
-from users.services.email import is_valid_email
+
+from apps.users.api.serializers import UserSerializer
+from apps.users.models import User
+from apps.users.repositories.interface import BaseUser
+from apps.users.services.email import is_valid_email
 
 
 class UserRepository(BaseUser):

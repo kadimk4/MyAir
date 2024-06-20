@@ -1,6 +1,7 @@
 from amadeus import Hotel
 from amadeus.client.response import Response
-from amadeus_api.api.main import amadeus
+
+from apps.amadeus_api.api.main import amadeus
 
 
 class ShoppingRepository:

@@ -1,6 +1,5 @@
-from tickets.repositories.repository import TicketRepository
-from users.repositories.repository import UserRepository
-
+from apps.tickets.repositories.repository import TicketRepository
+from apps.users.repositories.repository import UserRepository
 from utils.interface import BaseRepository
 
 

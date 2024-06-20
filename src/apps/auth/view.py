@@ -1,8 +1,9 @@
-from auth.serializers import AuthSerializer
 from django.contrib.auth import logout
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from apps.auth.serializers import AuthSerializer
 
 
 class LoginView(APIView):
