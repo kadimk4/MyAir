@@ -1,5 +1,4 @@
 from drf_spectacular.utils import extend_schema
-from knox.auth import TokenAuthentication
 from rest_framework import mixins, permissions, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
@@ -16,7 +15,7 @@ from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSc
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = BasePagination
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    authentication_classes = [SessionAuthentication]
     serializer_class = UserListSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
@@ -30,7 +29,7 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
 @extend_schema(tags=['Users'])
 class SelfView(GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    authentication_classes = [SessionAuthentication]
     serializer_class = UserSerializer
 
     @extend_schema(
@@ -64,7 +63,7 @@ class SelfCreateView(GenericAPIView):
 @extend_schema(tags=['Users'])
 class SelfUpdateDeleteView(GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    authentication_classes = [SessionAuthentication]
     serializer_class = UserSerializer
 
     @extend_schema(
