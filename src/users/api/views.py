@@ -1,7 +1,5 @@
-from django.contrib.auth import login
 from drf_spectacular.utils import extend_schema
 from knox.auth import TokenAuthentication
-from knox.views import LoginView as KnoxLoginView
 from rest_framework import mixins, permissions, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
@@ -10,7 +8,7 @@ from rest_framework.response import Response
 
 from core.factories.rep_factory import RepositoryFactory
 from core.pagination import BasePagination
-from users.api.serializers import AuthSerializer, UserListSerializer, UserSerializer
+from users.api.serializers import UserListSerializer, UserSerializer
 from users.schemas import SelfCreateViewSchema, SelfUpdateViewSchema, SelfViewSchema
 
 
@@ -85,17 +83,3 @@ class SelfUpdateDeleteView(GenericAPIView):
         repository = RepositoryFactory.create('user')
         serializer = repository.delete(id)
         return Response(serializer, status=status.HTTP_200_OK)
-
-
-class LoginView(KnoxLoginView):
-    serializer_class = AuthSerializer
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.validated_data['user']
-            login(request, user)
-            return super().post(request, format=None)
-        else:
-            return Response('Error during login', status=status.HTTP_400_BAD_REQUEST)
