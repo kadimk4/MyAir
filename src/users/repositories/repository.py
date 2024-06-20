@@ -36,10 +36,21 @@ class UserRepository(BaseUser):
     def post(self, request: Request) -> dict[str, str] | None:
         if is_valid_email(request.data['email']):
 
+            user = User(
+                username=request.data['username'],
+                first_name=request.data['first_name'],
+                last_name=request.data['last_name'],
+                email=request.data['email'],
+                link=request.data['link'],
+                passport=request.data['passport']
+            )
+
+            user.set_password(request.data['password'])
+
             serializer = UserSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
-            serializer.save()
+            user.save()
 
             return {
                 'username': request.data['username'],
