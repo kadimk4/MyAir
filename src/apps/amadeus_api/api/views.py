@@ -4,15 +4,15 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from utils.factories.amadeus_factory import AmadeusFactory
+from utils.factories.service_factory import ServiceFactory
 
 
 @extend_schema(tags=['Shopping'])
 class CheapestFlightsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_shopping')
-        response = repository.cheapest_flights(**parameters)
+        service = ServiceFactory.create('amadeus_shopping')
+        response = service.cheapest_flights(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -20,8 +20,8 @@ class CheapestFlightsView(GenericAPIView):
 class FavorableFlightsDatesView(ListAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_shopping')
-        response = repository.favorable_flights_dates(**parameters)
+        service = ServiceFactory.create('amadeus_shopping')
+        response = service.favorable_flights_dates(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -29,8 +29,8 @@ class FavorableFlightsDatesView(ListAPIView):
 class CheapestJourneyView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_shopping')
-        response = repository.cheapest_journey(**parameters)
+        service = ServiceFactory.create('amadeus_shopping')
+        response = service.cheapest_journey(**parameters)
         return Response(data=response.data, status=status.HTTP_200_OK)
 
 
@@ -38,8 +38,8 @@ class CheapestJourneyView(GenericAPIView):
 class PredictTravelChoiceView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_shopping')
-        response = repository.predict_travel_choice(**parameters)
+        service = ServiceFactory.create('amadeus_shopping')
+        response = service.predict_travel_choice(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -47,8 +47,8 @@ class PredictTravelChoiceView(GenericAPIView):
 class PredictTravelPurposeView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_travel')
-        response = repository.predict_travel_purpose(**parameters)
+        service = ServiceFactory.create('amadeus_travel')
+        response = service.predict_travel_purpose(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -56,8 +56,8 @@ class PredictTravelPurposeView(GenericAPIView):
 class PredictFlightDelayView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_travel')
-        response = repository.predict_flight_delay(**parameters)
+        service = ServiceFactory.create('amadeus_travel')
+        response = service.predict_flight_delay(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -65,8 +65,8 @@ class PredictFlightDelayView(GenericAPIView):
 class DetailsAirportView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_reference')
-        response = repository.details_airport(**parameters)
+        service = ServiceFactory.create('amadeus_reference')
+        response = service.details_airport(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -74,8 +74,8 @@ class DetailsAirportView(GenericAPIView):
 class ListNearAirportsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_reference')
-        response = repository.list_near_airports(**parameters)
+        service = ServiceFactory.create('amadeus_reference')
+        response = service.list_near_airports(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -83,8 +83,8 @@ class ListNearAirportsView(GenericAPIView):
 class CheckinLinksView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_reference')
-        response = repository.checkin_links(**parameters)
+        service = ServiceFactory.create('amadeus_reference')
+        response = service.checkin_links(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -92,8 +92,8 @@ class CheckinLinksView(GenericAPIView):
 class RecommendedLocationsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_reference')
-        response = repository.recommended_locations(**parameters)
+        service = ServiceFactory.create('amadeus_reference')
+        response = service.recommended_locations(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -101,8 +101,8 @@ class RecommendedLocationsView(GenericAPIView):
 class ListCityHotelsView(GenericAPIView):
 
     def get(self, request: Request, **parameters: str) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_reference')
-        response = repository.list_city_hotels(**parameters)
+        service = ServiceFactory.create('amadeus_reference')
+        response = service.list_city_hotels(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -110,8 +110,8 @@ class ListCityHotelsView(GenericAPIView):
 class PercentageOnTimeDeparturesView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_airport')
-        response = repository.percentage_ofontime_departures(**parameters)
+        service = ServiceFactory.create('amadeus_airport')
+        response = service.percentage_ofontime_departures(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)
 
 
@@ -119,6 +119,6 @@ class PercentageOnTimeDeparturesView(GenericAPIView):
 class AirportDirectView(GenericAPIView):
 
     def get(self, request: Request, **parameters: dict[str, str]) -> Response[list[dict[str, str]]]:
-        repository = AmadeusFactory.create('amadeus_airport')
-        response = repository.airport_direct(**parameters)
+        service = ServiceFactory.create('amadeus_airport')
+        response = service.airport_direct(**parameters)
         return Response(data=response, status=status.HTTP_200_OK)

@@ -4,7 +4,7 @@ from amadeus.client.response import Response
 from apps.amadeus_api.api.main import amadeus
 
 
-class ShoppingRepository:
+class ShoppingService:
 
     def __init__(self) -> None:
         self.request = amadeus.shopping
@@ -32,7 +32,7 @@ class ShoppingRepository:
         return request.data
 
 
-class TravelRepository:
+class TravelService:
 
     def __init__(self) -> None:
         self.request = amadeus.travel
@@ -64,7 +64,7 @@ class TravelRepository:
         return request.data
 
 
-class ReferenceDataRepository:
+class ReferenceDataService:
 
     def __init__(self) -> None:
         self.request = amadeus.reference_data
@@ -90,7 +90,7 @@ class ReferenceDataRepository:
         return request.data
 
 
-class AirportRepository:
+class AirportService:
 
     def __init__(self) -> None:
         self.request = amadeus.airport

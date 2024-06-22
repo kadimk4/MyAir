@@ -5,7 +5,7 @@ from apps.tickets.api.serializers import TicketGetSerializer
 from apps.tickets.models import Ticket
 from apps.tickets.repositories.interface import BaseTicket
 from apps.tickets.services.generator import generate_ticket_data
-from utils.factories.amadeus_factory import AmadeusFactory
+from utils.factories.service_factory import ServiceFactory
 
 
 class TicketRepository(BaseTicket):
@@ -32,7 +32,7 @@ class TicketRepository(BaseTicket):
         }
 
     def post(self, request: Request) -> dict[str, str]:
-        repository = AmadeusFactory.create('amadeus_shopping')
+        repository = ServiceFactory.create('amadeus_shopping')
         data = request.data.dict()
         response = repository.cheapest_journey(**data).result['data'][0]
         ticket = generate_ticket_data(response, request)

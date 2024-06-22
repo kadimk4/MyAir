@@ -14,7 +14,6 @@ class AuthSerializer(serializers.Serializer):
         password_ = request.data.get('password')
 
         user = authenticate(
-            request=self.context.get('request'),
             username=username_,
             password=password_
         )
@@ -23,6 +22,4 @@ class AuthSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authentication')
 
         login(request, user)
-
-        request.data['user'] = user
         return request.data
