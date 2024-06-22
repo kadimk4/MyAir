@@ -4,8 +4,9 @@ from kafka.serializer import kafka_decode, kafka_encode
 
 from core.conf.environ import env
 
-localhost = env('POSTGRES_DB_HOST')
-KAFKA_BROKER_URL = f'{localhost}:9092'
+
+ports = [env('KAFKA_PORT1'), env('KAFKA_PORT2'), env('KAFKA_PORT3')]
+KAFKA_BROKER_URL = [f'localhost:{ports[0]}', f'localhost:{ports[1]}', f'localhost:{ports[2]}']
 KAFKA_TOPIC = 'chat-topic'
 
 

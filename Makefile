@@ -3,11 +3,11 @@ STORAGES_FILE = docker_compose/storages.yaml
 KAFKA_FILE = docker_compose/kafka.yaml
 TESTS_FILE = docker_compose/tests.yaml
 EXEC = docker exec -it
-DB_CONTAINER = postgres
+DB_CONTAINER = myair-db
 LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
-APP_CONTAINER = main-app
+APP_CONTAINER = myair-app
 MANAGE_PY = python manage.py
 
 
