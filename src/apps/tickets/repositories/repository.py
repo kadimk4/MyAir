@@ -11,18 +11,20 @@ from utils.factories.service_factory import ServiceFactory
 class TicketRepository(BaseTicket):
 
     def get_all(self) -> list[dict]:
-        ticket_list = Ticket.objects.values(
-            'id',
+        ticket_list = Ticket.objects.all().order_by('id')
+        return ticket_list
+    
+    def get_self_tickets(self, request) -> list[dict]:
+        ticket_list = Ticket.objects.filter(user_id=request.user.id).values(
             'code',
             'departure_date',
             'duration',
             'price',
-            'user_id'
         )
         return ticket_list
-
+    
     def get(self, ticket_id: int) -> dict[str, str]:
-        ticket = get_object_or_404(Ticket, pk=ticket_id)
+        ticket = self._get_ticket(ticket_id)
         serializer = TicketGetSerializer(ticket)
         return {
             'code': serializer.data['code'],
@@ -61,7 +63,6 @@ class TicketRepository(BaseTicket):
     def delete(self, ticket_id: int) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketGetSerializer(ticket)
-        serializer.is_valid(raise_exception=True)
         ticket.delete()
         return {
             'code': serializer.data['code'],
@@ -69,3 +70,4 @@ class TicketRepository(BaseTicket):
             'duration': serializer.data['duration'],
             'price': serializer.data['price'],
         }
+

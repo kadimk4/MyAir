@@ -19,7 +19,7 @@ class UserRepository(BaseUser):
             'last_name',
             'link',
             'email',
-        )
+        ).order_by('id')
         return users_list
 
     def get(self, id: int) -> dict[str, str]:

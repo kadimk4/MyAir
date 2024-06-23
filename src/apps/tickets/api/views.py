@@ -24,7 +24,15 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
     def get(self, request: Request, *args, **kwargs) -> Response:
         return self.list(request, *args, **kwargs)
 
+@extend_schema(tags=['Tickets'])
+class SelfTicketsView(GenericAPIView):
+    serializer_class: ModelSerializer = TicketGetSerializer
 
+    def get(self, request) -> list[dict[str, str]]:
+        repository = RepositoryFactory.create('ticket')
+        response = repository.get_self_tickets(request)
+        return Response(data=response, status=status.HTTP_200_OK)
+    
 @extend_schema(tags=['Tickets'])
 class SelfView(GenericAPIView):
     serializer_class: ModelSerializer = TicketGetSerializer
@@ -41,7 +49,7 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(
         request=SelfAMADEUSViewSchema(),
@@ -57,7 +65,7 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketSerializer
+    serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(
         parameters=SelfViewSchemaID(),
