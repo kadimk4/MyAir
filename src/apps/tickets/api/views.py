@@ -41,7 +41,7 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketGetSerializer
+    serializer_class: ModelSerializer = TicketSerializer
 
     @extend_schema(
         request=SelfAMADEUSViewSchema(),
@@ -57,7 +57,7 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
-    serializer_class: ModelSerializer = TicketGetSerializer
+    serializer_class: ModelSerializer = TicketSerializer
 
     @extend_schema(
         parameters=SelfViewSchemaID(),

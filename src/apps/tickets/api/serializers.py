@@ -5,6 +5,7 @@ from apps.tickets.models import Ticket
 
 
 class TicketGetSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
 
     class Meta:
         model: Model = Ticket

@@ -18,7 +18,7 @@ from utils.pagination import BasePagination
 @extend_schema(tags=['Users'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = BasePagination
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAdminUser,)
     authentication_classes = [SessionAuthentication]
     serializer_class = UserListSerializer
 
@@ -49,9 +49,9 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfCreateView(GenericAPIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = [SessionAuthentication]
     serializer_class = UserSerializer
-    # permission_classes = (permissions.AllowAny,)
-    # authentication_classes = [TokenAuthentication]
 
     @extend_schema(
         request=SelfCreateViewSchema()
