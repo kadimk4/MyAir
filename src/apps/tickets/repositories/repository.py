@@ -24,7 +24,7 @@ class TicketRepository(BaseTicket):
         return ticket_list
     
     def get(self, ticket_id: int) -> dict[str, str]:
-        ticket = self._get_ticket(ticket_id)
+        ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketGetSerializer(ticket)
         return {
             'code': serializer.data['code'],
