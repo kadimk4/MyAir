@@ -78,12 +78,12 @@ class UserRepository(BaseUser):
 
     def delete(self, user_id: int) -> dict[str, str]:
         user = get_object_or_404(User, pk=user_id)
-        user_serializer = UserSerializer(user)
+        user_serializer = UserSerializer(user).data
         user.delete()
-        return {'id': user_serializer.data['id'],
-                'username': user_serializer.data['username'],
-                'first_name': user_serializer.data['first_name'],
-                'last_name': user_serializer.data['last_name'],
-                'link': user_serializer.data['link'],
-                'email': user_serializer.data['email'],
+        return {'id': user_serializer['id'],
+                'username': user_serializer['username'],
+                'first_name': user_serializer['first_name'],
+                'last_name': user_serializer['last_name'],
+                'link': user_serializer['link'],
+                'email': user_serializer['email'],
                 }

@@ -16,7 +16,6 @@ include(
     'conf/templates.py',
     'conf/timezone.py',
     'conf/rest_framework.py',
-    'conf/knox.py'
 )
 
 
