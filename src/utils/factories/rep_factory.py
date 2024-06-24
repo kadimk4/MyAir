@@ -4,7 +4,8 @@ from utils.interface import BaseRepository
 
 
 class RepositoryFactory:
-    repositories: dict[str, type[BaseRepository]] = {'user': UserRepository, 'ticket': TicketRepository, }
+    repositories: dict[str, type[BaseRepository]] = {
+        'user': UserRepository, 'ticket': TicketRepository, }
 
     @classmethod
     def create(cls, name: str) -> BaseRepository:

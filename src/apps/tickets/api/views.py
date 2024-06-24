@@ -1,12 +1,15 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import mixins, status
+from rest_framework import mixins, permissions, status
+from rest_framework.authentication import BaseAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from apps.tickets.api.serializers import TicketGetSerializer, TicketSerializer
+from apps.tickets.repositories.interface import BaseTicket
 from apps.tickets.schemas import SelfAMADEUSViewSchema, SelfViewSchema, SelfViewSchemaID
 from utils.factories.rep_factory import RepositoryFactory
 from utils.pagination import BasePagination
@@ -15,6 +18,8 @@ from utils.pagination import BasePagination
 @extend_schema(tags=['Tickets'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
     pagination_class: PageNumberPagination = BasePagination
+    permission_classes: list[BasePermission] = [permissions.IsAdminUser]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
     serializer_class: ModelSerializer = TicketGetSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
@@ -24,17 +29,26 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
     def get(self, request: Request, *args, **kwargs) -> Response:
         return self.list(request, *args, **kwargs)
 
+
 @extend_schema(tags=['Tickets'])
-class SelfTicketsView(GenericAPIView):
+class SelfUserTicketsView(GenericAPIView):
+    pagination_class: PageNumberPagination = BasePagination
+    permission_classes: list[BaseAuthentication] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
     serializer_class: ModelSerializer = TicketGetSerializer
 
     def get(self, request) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('ticket')
-        response = repository.get_self_tickets(request)
-        return Response(data=response, status=status.HTTP_200_OK)
-    
+        if isinstance(repository, BaseTicket):
+            response = repository.get_self_tickets(request)
+            return Response(data=response, status=status.HTTP_200_OK)
+        return Response(data={'error': 'Invalid repository type'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @extend_schema(tags=['Tickets'])
 class SelfView(GenericAPIView):
+    permission_classes: list[BasePermission] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
     serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(
@@ -49,6 +63,8 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfCreateView(GenericAPIView):
+    permission_classes: list[BasePermission] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
     serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(
@@ -65,6 +81,8 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Tickets'])
 class SelfUpdateDeleteView(GenericAPIView):
+    permission_classes: list[BasePermission] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
     serializer_class: ModelSerializer = TicketGetSerializer
 
     @extend_schema(

@@ -5,11 +5,11 @@ from rest_framework.request import Request
 
 from apps.users.api.serializers import UserSerializer
 from apps.users.models import User
-from apps.users.repositories.interface import BaseUser
 from apps.users.services.email import is_valid_email
+from utils.interface import BaseRepository
 
 
-class UserRepository(BaseUser):
+class UserRepository(BaseRepository):
 
     def get_all(self) -> list[dict]:
         users_list = User.objects.values(
@@ -35,7 +35,6 @@ class UserRepository(BaseUser):
 
     def post(self, request: Request) -> dict[str, str] | None:
         if is_valid_email(request.data['email']):
-
             user = User(
                 username=request.data['username'],
                 first_name=request.data['first_name'],
