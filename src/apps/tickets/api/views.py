@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 
 from apps.tickets.api.serializers import TicketGetSerializer, TicketSerializer
-from apps.tickets.repositories.interface import BaseTicket
 from apps.tickets.schemas import SelfAMADEUSViewSchema, SelfViewSchema, SelfViewSchemaID
 from utils.factories.rep_factory import RepositoryFactory
 from utils.pagination import BasePagination
@@ -39,10 +38,8 @@ class SelfUserTicketsView(GenericAPIView):
 
     def get(self, request) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('ticket')
-        if isinstance(repository, BaseTicket):
-            response = repository.get_self_tickets(request)
-            return Response(data=response, status=status.HTTP_200_OK)
-        return Response(data={'error': 'Invalid repository type'}, status=status.HTTP_400_BAD_REQUEST)
+        response = repository.get_self_tickets(request)
+        return Response(data=response, status=status.HTTP_200_OK)
 
 
 @extend_schema(tags=['Tickets'])
