@@ -1,9 +1,12 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, permissions, status
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import BaseAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.serializers import ModelSerializer
 
 from apps.users.api.serializers import UserListSerializer, UserSerializer
 from apps.users.schemas import (
@@ -17,10 +20,10 @@ from utils.pagination import BasePagination
 
 @extend_schema(tags=['Users'])
 class SelfListView(mixins.ListModelMixin, GenericAPIView):
-    pagination_class = BasePagination
-    permission_classes = (permissions.IsAdminUser,)
-    authentication_classes = [SessionAuthentication]
-    serializer_class = UserListSerializer
+    pagination_class: PageNumberPagination = BasePagination
+    permission_classes: list[BasePermission] = [permissions.IsAdminUser]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
+    serializer_class: ModelSerializer = UserListSerializer
 
     def get_queryset(self) -> list[dict[str, str]]:
         repository = RepositoryFactory.create('user')
@@ -32,9 +35,9 @@ class SelfListView(mixins.ListModelMixin, GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfView(GenericAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [SessionAuthentication]
-    serializer_class = UserSerializer
+    permission_classes: list[BasePermission] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
+    serializer_class: ModelSerializer = UserSerializer
 
     @extend_schema(
 
@@ -49,9 +52,9 @@ class SelfView(GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfCreateView(GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = [SessionAuthentication]
-    serializer_class = UserSerializer
+    permission_classes: list[BasePermission] = [permissions.AllowAny]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
+    serializer_class: ModelSerializer = UserSerializer
 
     @extend_schema(
         request=SelfCreateViewSchema()
@@ -66,9 +69,9 @@ class SelfCreateView(GenericAPIView):
 
 @extend_schema(tags=['Users'])
 class SelfUpdateDeleteView(GenericAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [SessionAuthentication]
-    serializer_class = UserSerializer
+    permission_classes: list[BasePermission] = [permissions.IsAuthenticated]
+    authentication_classes: list[BaseAuthentication] = [SessionAuthentication]
+    serializer_class: ModelSerializer = UserSerializer
 
     @extend_schema(
         parameters=SelfViewSchema(),

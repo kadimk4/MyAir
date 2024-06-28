@@ -2,7 +2,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from users.models import User
+
+from apps.users.models import User
 
 
 class UsersTest(APITestCase):
@@ -18,24 +19,35 @@ class UsersTest(APITestCase):
         )
 
         image = SimpleUploadedFile('small.gif', small_gif, content_type='image/gif')
-        data = {'first_name': 'Kate',
-                'last_name': 'Laster',
-                'username': 'gipo',
-                'email': 'kategipo@yandex.ru',
-                'link': 'gip',
-                'password': '123214124124',
-                'passport': image
-                }
+        user_data = {'first_name': 'Kate',
+                     'last_name': 'Laster',
+                     'username': 'qq2',
+                     'email': 'kategipo@yandex.ru',
+                     'link': 'qq',
+                     'password': 'asdzxc',
+                     'passport': image
+                     }
 
-        response = self.client.post(url, data, format='multipart')
+        response = self.client.post(url, user_data, format='multipart')
 
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='password123'
+        )
+        login = self.client.login(username='admin', password='password123')
+        self.assertTrue(login)
+
         url = reverse('users-list')
         response = self.client.get(url, format='json')
         user_id = response.data['results'][0]['id']
-        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(len(response.data['results']), 2)
+
+        login = self.client.login(username=user_data['username'], password=user_data['password'])
+        self.assertTrue(login)
 
         url = reverse('user-change', kwargs={'id': user_id})
         data = {
@@ -52,6 +64,9 @@ class UsersTest(APITestCase):
         url = reverse('user-change', kwargs={'id': user_id})
         response = self.client.delete(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        login = self.client.login(username='admin', password='password123')
+        self.assertTrue(login)
 
         url = reverse('user-view', kwargs={'id': user_id})
         response = self.client.get(url, format='json')

@@ -8,7 +8,7 @@ class TicketGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model: Model = Ticket
-        fields: list[str, int] = [
+        fields: list[str | int] = [
             'id',
             'code',
             'departure_date',

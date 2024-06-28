@@ -13,7 +13,7 @@ class TicketRepository(BaseTicket):
     def get_all(self) -> list[dict]:
         ticket_list = Ticket.objects.all().order_by('id')
         return ticket_list
-    
+
     def get_self_tickets(self, request) -> list[dict]:
         ticket_list = Ticket.objects.filter(user_id=request.user.id).values(
             'code',
@@ -22,7 +22,7 @@ class TicketRepository(BaseTicket):
             'price',
         )
         return ticket_list
-    
+
     def get(self, ticket_id: int) -> dict[str, str]:
         ticket = get_object_or_404(Ticket, pk=ticket_id)
         serializer = TicketGetSerializer(ticket)
@@ -35,8 +35,9 @@ class TicketRepository(BaseTicket):
 
     def post(self, request: Request) -> dict[str, str]:
         repository = ServiceFactory.create('amadeus_shopping')
-        data = request.data.dict()
-        response = repository.cheapest_journey(**data).result['data'][0]
+        data = request.data
+        response = repository.cheapest_journey(
+            city_code_from=data['city_code_from'], city_code_to=data['city_code_to'], date=data['date'], adults_count=data['adults_count']).result['data'][0]
         ticket = generate_ticket_data(response, request)
         serializer = TicketGetSerializer(data=ticket)
         serializer.is_valid(raise_exception=True)
@@ -70,4 +71,3 @@ class TicketRepository(BaseTicket):
             'duration': serializer.data['duration'],
             'price': serializer.data['price'],
         }
-
